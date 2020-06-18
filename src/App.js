@@ -2,6 +2,12 @@ import React from "react";
 import "./App.css";
 import { ThemeContextConsumer } from "./context/theme";
 
+import  ProductsList  from "./components/ProductsList";
+import  ProductDetails  from "./components/ProductDetails";
+import  Signin  from "./components/Signin";
+import  Signup  from "./components/Signup";
+import  Cart  from "./components/Cart/Cart";
+
 class App extends React.Component {
   state = {
     purchases: [],
@@ -38,36 +44,16 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <p>Hello Cart</p>
         <ThemeContextConsumer>
           {(val) => {
             return (
               <React.Fragment>
-                <p style={{ color: val.theme.primary.main }}>I am a cameleon</p>
-                <button
-                  type="button"
-                  onClick={() => val.toggleTheme()}
-                  style={{
-                    backgroundColor: val.theme.primary.main,
-                    color: val.theme.primary.text,
-                    border: `1px solid ${val.theme.primary.dark}`,
-                    borderRadius: "5px",
-                    padding: "10px 15px",
-                    cursor: "pointer",
-                  }}
-                >
-                  Switch theme button
-                </button>
-                {this.state.purchases.map((purchase) => {
-                  return (
-                    <p
-                      style={{ border: `1px solid ${val.theme.primary.dark}` }}
-                      key={purchase.id}
-                    >
-                      {purchase.name}
-                    </p>
-                  );
-                })}
+                <nav>Navigacja</nav>
+                <ProductsList/>
+                <ProductDetails/>
+                <Signin/>
+                <Signup/>
+                <Cart/>
               </React.Fragment>
             );
           }}
