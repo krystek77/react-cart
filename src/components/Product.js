@@ -2,10 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { ThemeContextConsumer } from "../context/theme";
+import PropTypes from "prop-types";
 
 export default function Product(props) {
   const { img, price, name, inCart } = props;
-  console.log(props);
+
   return (
     <ThemeContextConsumer>
       {(value) => {
@@ -129,3 +130,11 @@ const ProductWrapper = styled.div`
     }
   }
 `;
+
+Product.propTypes = {
+  img: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  inCart: PropTypes.bool.isRequired,
+};
+
