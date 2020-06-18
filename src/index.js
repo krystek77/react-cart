@@ -1,15 +1,19 @@
 import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 
 import { ThemeContextProvider } from "./context/theme";
 
-ReactDOM.render(
+const app = (
   <ThemeContextProvider>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </ThemeContextProvider>,
-  document.getElementById("root")
+    <Router>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </Router>
+  </ThemeContextProvider>
 );
+const container = document.getElementById("root");
+ReactDOM.render(app, container);
