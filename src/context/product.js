@@ -16,7 +16,7 @@ class ProductContextProvider extends React.Component {
   }
 
   componentDidMount() {
-    console.log("[ProductContextProvider]-mounted");
+    // console.log("[ProductContextProvider]-mounted");
     this.setProducts();
   }
   setProducts = () => {
@@ -36,12 +36,15 @@ class ProductContextProvider extends React.Component {
       () => {}
     );
   };
-
+  addToCart = (id) => {
+    console.log("Add to cart", id);
+  };
   render() {
     return (
       <ProductContext.Provider
         value={{
           ...this.state,
+          addToCart: this.addToCart,
         }}
       >
         {this.props.children}

@@ -2,10 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { ThemeContextConsumer } from "../context/theme";
+import { ProductContextConsumer } from "../context/product";
 import PropTypes from "prop-types";
 
 export default function Product(props) {
-  const { img, price, name, inCart } = props;
+  const { id, img, price, name, inCart } = props;
 
   return (
     <ThemeContextConsumer>
@@ -23,21 +24,26 @@ export default function Product(props) {
                 <Link to="/details" className="image-link">
                   <img className="image" src={img} alt={img} />
                 </Link>
-                {/* button inCart */}
-                <button
-                  className="btn-inCart"
-                  disabled={inCart ? true : false}
-                  onClick={() => {
-                    console.log("ADD TO CARD");
+                <ProductContextConsumer>
+                  {(value) => {
+                    return (
+                      <button
+                        className="btn-inCart"
+                        disabled={inCart ? true : false}
+                        onClick={() => value.addToCart(id)}
+                      >
+                        {inCart ? (
+                          "inCart"
+                        ) : (
+                          <i
+                            className="fa fa-cart-arrow-down"
+                            aria-hidden="true"
+                          ></i>
+                        )}
+                      </button>
+                    );
                   }}
-                >
-                  {inCart ? (
-                    "inCart"
-                  ) : (
-                    <i className="fa fa-cart-arrow-down" aria-hidden="true"></i>
-                  )}
-                </button>
-                {/* end button inCart */}
+                </ProductContextConsumer>
               </div>
               <div className="footer-card">
                 <h2 className="fruit-name">{name}</h2>
@@ -59,7 +65,7 @@ const ProductWrapper = styled.div`
     background-color: ${(props) => props.value.theme.primary.light};
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
     border-radius: 0.4rem;
-    min-height: 285px;
+    min-height: 327px;
     overflow: hidden;
   }
   .image-container {
@@ -132,6 +138,7 @@ const ProductWrapper = styled.div`
 `;
 
 Product.propTypes = {
+  id: PropTypes.number.isRequired,
   img: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,

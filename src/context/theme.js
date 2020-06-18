@@ -45,17 +45,17 @@ class ThemeContextProvider extends React.Component {
     };
   }
   componentDidUpdate() {
-    console.log("[ThemeContextProvider] - updated");
+    // console.log("[ThemeContextProvider] - updated");
   }
   componentDidMount() {
-    console.log("[ThemeContextProvider] - mounted");
+    // console.log("[ThemeContextProvider] - mounted");
   }
 
   toggleTheme() {
-    console.log("TOGGLE THEME");
+    // console.log("TOGGLE THEME");
     this.setState(
       (prevState, props) => {
-        console.log("[ThemeContextProvider] - setState");
+        // console.log("[ThemeContextProvider] - setState");
         return {
           theme:
             prevState.theme === themes.orangeMagenta
@@ -64,7 +64,7 @@ class ThemeContextProvider extends React.Component {
         };
       },
       () => {
-        console.log("Theme changed", this.state.theme);
+        // console.log("Theme changed", this.state.theme);
       }
     );
   }
