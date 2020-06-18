@@ -50,6 +50,7 @@ class App extends React.Component {
             return (
               <React.Fragment>
                 <nav>Navigacja</nav>
+                <i class="fas fa-cart-plus"></i>
                 <Switch>
                   <Route path="/signin" component={Signin} />
                   <Route path="/signup" component={Signup} />
