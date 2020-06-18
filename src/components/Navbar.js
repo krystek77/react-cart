@@ -55,9 +55,9 @@ export default function Navbar() {
             </Link>
             <ButtonWrapper value={value} onClick={value.toggleTheme}>
               {value.theme === themes.orangeMagenta ? (
-                <i class="fas fa-toggle-on"></i>
+                <i className="fas fa-toggle-on"></i>
               ) : (
-                <i class="fas fa-toggle-off"></i>
+                <i className="fas fa-toggle-off"></i>
               )}
             </ButtonWrapper>
           </div>

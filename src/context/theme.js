@@ -38,7 +38,7 @@ const ThemeContext = React.createContext({
 
 class ThemeContextProvider extends React.Component {
   constructor(props) {
-    console.log("[ThemeContextProvider] - constructor");
+    // console.log("[ThemeContextProvider] - constructor");
     super(props);
     this.state = {
       theme: themes.orangeMagenta,
@@ -69,7 +69,7 @@ class ThemeContextProvider extends React.Component {
     );
   }
   render() {
-    console.log("[ThemeContextProvider] - render", this.state.theme);
+    // console.log("[ThemeContextProvider] - render", this.state.theme);
     const { children } = this.props;
     return (
       <ThemeContext.Provider

@@ -1,13 +1,14 @@
-export const porducts = [
+export const products = [
   {
     id: 1,
     img: "img/banana-min.png",
     price: 2,
     count: 0,
     total: 0,
+    inCart: false,
     description:
       "Objectively harness interactive materials without standards compliant materials. Conveniently deploy business intellectual capital rather than cutting-edge materials. Globally develop parallel vortals through just.",
-    name: "Banana fresh",
+    name: "Fresh banana",
     origin: "Poland",
   },
   {
@@ -16,6 +17,7 @@ export const porducts = [
     price: 1,
     count: 0,
     total: 0,
+    inCart: true,
     description:
       "Objectively harness interactive materials without standards compliant materials. Conveniently deploy business intellectual capital rather than cutting-edge materials. Globally develop parallel vortals through just.",
     name: "Banana fresh",
@@ -27,6 +29,7 @@ export const porducts = [
     price: 3.2,
     count: 0,
     total: 0,
+    inCart: false,
     description:
       "Objectively harness interactive materials without standards compliant materials. Conveniently deploy business intellectual capital rather than cutting-edge materials. Globally develop parallel vortals through just.",
     name: "Lemon",
@@ -38,6 +41,7 @@ export const porducts = [
     price: 1.2,
     count: 0,
     total: 0,
+    inCart: false,
     description:
       "Objectively harness interactive materials without standards compliant materials. Conveniently deploy business intellectual capital rather than cutting-edge materials. Globally develop parallel vortals through just.",
     name: "Young onion",
@@ -49,6 +53,7 @@ export const porducts = [
     price: 1.5,
     count: 0,
     total: 0,
+    inCart: false,
     description:
       "Objectively harness interactive materials without standards compliant materials. Conveniently deploy business intellectual capital rather than cutting-edge materials. Globally develop parallel vortals through just.",
     name: "juicy orange",
@@ -60,6 +65,7 @@ export const porducts = [
     price: 4.2,
     count: 0,
     total: 0,
+    inCart: false,
     description:
       "Objectively harness interactive materials without standards compliant materials. Conveniently deploy business intellectual capital rather than cutting-edge materials. Globally develop parallel vortals through just.",
     name: "Red pepper",
@@ -71,6 +77,7 @@ export const porducts = [
     price: 2,
     count: 0,
     total: 0,
+    inCart: false,
     description:
       "Objectively harness interactive materials without standards compliant materials. Conveniently deploy business intellectual capital rather than cutting-edge materials. Globally develop parallel vortals through just.",
     name: "Awesome potato",
@@ -82,6 +89,7 @@ export const porducts = [
     price: 2,
     count: 0,
     total: 0,
+    inCart: false,
     description:
       "Objectively harness interactive materials without standards compliant materials. Conveniently deploy business intellectual capital rather than cutting-edge materials. Globally develop parallel vortals through just.",
     name: "Water melon",
@@ -89,12 +97,13 @@ export const porducts = [
   },
 ];
 
-export const detailProduct = {
+export const productDetails = {
   id: 6,
   img: "img/pepper-min.png",
   price: 4.2,
   count: 0,
   total: 0,
+  inCart: false,
   description:
     "Objectively harness interactive materials without standards compliant materials. Conveniently deploy business intellectual capital rather than cutting-edge materials. Globally develop parallel vortals through just.",
   name: "Red pepper",
