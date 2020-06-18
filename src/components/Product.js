@@ -42,7 +42,7 @@ export default function Product(props) {
               <div className="footer-card">
                 <h2 className="fruit-name">{name}</h2>
                 <span className="fruit-price">
-                  Euro: <strong>{price}</strong>
+                  Euro: <strong>{price.toFixed(2)}</strong>
                 </span>
               </div>
             </div>
@@ -137,4 +137,3 @@ Product.propTypes = {
   name: PropTypes.string.isRequired,
   inCart: PropTypes.bool.isRequired,
 };
-
