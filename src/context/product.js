@@ -11,7 +11,7 @@ class ProductContextProvider extends React.Component {
     super(props);
     this.state = {
       products: [],
-      productDetails: null,
+      productDetails: {},
     };
   }
 

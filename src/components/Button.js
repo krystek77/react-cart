@@ -10,6 +10,13 @@ export const ButtonWrapper = styled.button`
   background-color: ${(props) => props.value.theme.secondary.main};
   border: 1px solid ${(props) => props.value.theme.secondary.dark};
   transition: all 0.3s ease-in-out;
+  &:disabled {
+    background-color: grey;
+    border: 1px solid grey;
+    color: darkgrey;
+    pointer-events: none;
+    cursor: none;
+  }
   &:hover {
     color: ${(props) => props.value.theme.secondary.dark};
   }
