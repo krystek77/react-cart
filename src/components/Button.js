@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const ButtonWrapper = styled.button`
   font-size: 1.1rem;
   padding: 0.5rem 0.8rem;
+  margin: 0.2rem;
   border-radius: 0.2rem;
   cursor: pointer;
   color: ${(props) => props.value.theme.secondary.text};

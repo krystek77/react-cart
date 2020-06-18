@@ -44,22 +44,28 @@ export default function Navbar() {
                 </Link>
               </li>
             </ul>
-            <Link to="/cart">
-              <ButtonWrapper value={value}>
-                <i
-                  className="fa fa-cart-arrow-down btn-icon"
-                  aria-hidden="true"
-                ></i>
-                <span className="btn-label">Cart</span>
+            <div className="controls">
+              <Link to="/cart">
+                <ButtonWrapper value={value} className="control-btn">
+                  <i
+                    className="fa fa-cart-arrow-down btn-icon"
+                    aria-hidden="true"
+                  ></i>
+                  <span className="btn-label">Cart</span>
+                </ButtonWrapper>
+              </Link>
+              <ButtonWrapper
+                className="control-btn"
+                value={value}
+                onClick={value.toggleTheme}
+              >
+                {value.theme === themes.orangeMagenta ? (
+                  <i className="fas fa-toggle-on"></i>
+                ) : (
+                  <i className="fas fa-toggle-off"></i>
+                )}
               </ButtonWrapper>
-            </Link>
-            <ButtonWrapper value={value} onClick={value.toggleTheme}>
-              {value.theme === themes.orangeMagenta ? (
-                <i className="fas fa-toggle-on"></i>
-              ) : (
-                <i className="fas fa-toggle-off"></i>
-              )}
-            </ButtonWrapper>
+            </div>
           </div>
         </NavWrapper>
       )}
@@ -73,27 +79,59 @@ const NavWrapper = styled.nav`
   border: 1px solid ${(props) => props.value.theme.primary.dark};
   box-shadow: 0px 2px 4px -2px rgba(0, 0, 0, 1);
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   width: 100%;
   padding: 0rem 1.5rem;
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
   .brand-logo {
-    width: 3rem;
+    width: 5rem;
+    display: block;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    @media (min-width: 768px) {
+      width: 3rem;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
   }
   .nav-menu {
-    margin-left: auto;
     display: flex;
+    flex-direction: column;
     align-items: center;
+    width: 100%;
+    @media (min-width: 768px) {
+      width: auto;
+      margin-left: auto;
+      flex-direction: row;
+    }
   }
   .nav {
     display: flex;
+    flex-direction: column;
+    width: 100%;
     list-style-type: none;
     margin-right: 1.5rem;
+    @media (min-width: 768px) {
+      width: auto;
+      margin-left: auto;
+      flex-direction: row;
+    }
   }
   .nav-item {
-    border-right: 1px solid ${(props) => props.value.theme.primary.dark};
+    border-bottom: 1px solid ${(props) => props.value.theme.primary.dark};
+    @media (min-width: 768px) {
+      border-right: 1px solid ${(props) => props.value.theme.primary.dark};
+    }
   }
   .nav-item:first-child {
-    border-left: 1px solid ${(props) => props.value.theme.primary.dark};
+    border-top: 1px solid ${(props) => props.value.theme.primary.dark};
+    @media (min-width: 768px) {
+      border-left: 1px solid ${(props) => props.value.theme.primary.dark};
+    }
   }
   .nav-link {
     display: block;
@@ -108,5 +146,13 @@ const NavWrapper = styled.nav`
   .nav-link.active {
     background-color: ${(props) => props.value.theme.primary.light};
     color: ${(props) => props.value.theme.primary.dark};
+  }
+  .controls {
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+    @media (min-width: 768px) {
+      padding-top: 0rem;
+      padding-bottom: 0rem;
+    }
   }
 `;
