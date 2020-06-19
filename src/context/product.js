@@ -61,6 +61,7 @@ class ProductContextProvider extends React.Component {
     this.setState(() => {
       return {
         products: tempProducts,
+        productDetails: tempProduct,
         cart: [...this.state.cart, tempProduct],
       };
     });

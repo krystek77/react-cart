@@ -69,7 +69,7 @@ export default function ProductDetails(props) {
                         <ButtonWrapper
                           disabled={inCart ? true : false}
                           value={theme}
-                          onClick={() => data.addToCart(id)}
+                          onClick={() => addToCart(id)}
                         >
                           {inCart ? "In cart" : "Add to cart"}
                         </ButtonWrapper>
