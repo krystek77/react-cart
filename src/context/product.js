@@ -4,6 +4,7 @@ import { products, productDetails } from "../store/data";
 const ProductContext = React.createContext({
   products: [],
   productDetails: {},
+  cart: [],
 });
 
 class ProductContextProvider extends React.Component {
@@ -12,6 +13,7 @@ class ProductContextProvider extends React.Component {
     this.state = {
       products: [],
       productDetails: {},
+      cart: [],
     };
   }
 
@@ -59,6 +61,7 @@ class ProductContextProvider extends React.Component {
     this.setState(() => {
       return {
         products: tempProducts,
+        cart: [...this.state.cart, tempProduct],
       };
     });
   };
