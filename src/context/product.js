@@ -49,6 +49,18 @@ class ProductContextProvider extends React.Component {
 
   addToCart = (id) => {
     console.log("Add to cart", id);
+    const tempProducts = [...this.state.products];
+    const index = tempProducts.indexOf(this.getProduct(id));
+    const tempProduct = { ...tempProducts[index] };
+    tempProduct.inCart = true;
+    tempProduct.count = 1;
+    tempProduct.total = tempProduct.price;
+    tempProducts[index] = tempProduct;
+    this.setState(() => {
+      return {
+        products: tempProducts,
+      };
+    });
   };
   handleProductDetails = (id) => {
     const productDetails = this.getProduct(id);
