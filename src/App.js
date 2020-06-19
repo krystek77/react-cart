@@ -9,6 +9,7 @@ import Signin from "./components/Signin";
 import Signup from "./components/Signup";
 import Cart from "./components/Cart/Cart";
 import Modal from "./components/Modal";
+import Footer from "./components/Footer";
 
 class App extends React.Component {
   render() {
@@ -24,6 +25,7 @@ class App extends React.Component {
           <Route path="/" component={ProductsList} />
           <Redirect to="/" />
         </Switch>
+        <Footer />
       </div>
     );
   }
