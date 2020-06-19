@@ -15,8 +15,11 @@ class ProductContextProvider extends React.Component {
     };
   }
 
+  componentDidUpdate() {
+    console.log("[ProductContextProvider]-updated");
+  }
   componentDidMount() {
-    // console.log("[ProductContextProvider]-mounted");
+    console.log("[ProductContextProvider]-mounted");
     this.setProducts();
   }
   setProducts = () => {
@@ -36,8 +39,28 @@ class ProductContextProvider extends React.Component {
       () => {}
     );
   };
+
+  getProduct = (id) => {
+    return this.state.products.find((product) => product.id === id);
+  };
+
   addToCart = (id) => {
     console.log("Add to cart", id);
+  };
+  handleProductDetails = (id) => {
+    // console.log("Display product details", id);
+    // console.log(this.getProduct(id));
+    const productDetails = this.getProduct(id);
+    this.setState(
+      () => {
+        return {
+          productDetails: productDetails,
+        };
+      },
+      () => {
+        // console.log(this.state.productDetails);
+      }
+    );
   };
   render() {
     return (
@@ -45,6 +68,7 @@ class ProductContextProvider extends React.Component {
         value={{
           ...this.state,
           addToCart: this.addToCart,
+          displayDetails: this.handleProductDetails,
         }}
       >
         {this.props.children}

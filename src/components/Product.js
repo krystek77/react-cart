@@ -7,7 +7,6 @@ import PropTypes from "prop-types";
 
 export default function Product(props) {
   const { id, img, price, name, inCart } = props;
-
   return (
     <ThemeContextConsumer>
       {(value) => {
@@ -17,20 +16,21 @@ export default function Product(props) {
             className="col-10 mx-auto col-md-6 col-lg-3 my-2"
           >
             <div className="card">
-              <div
-                className="image-container"
-                onClick={() => console.log("Clicked on the image container")}
-              >
-                <Link to="/details" className="image-link">
-                  <img className="image" src={img} alt={img} />
-                </Link>
-                <ProductContextConsumer>
-                  {(value) => {
-                    return (
+              <ProductContextConsumer>
+                {(data) => {
+                  return (
+                    <div
+                      className="image-container"
+                      onClick={() => data.displayDetails(id)}
+                    >
+                      <Link to="/details" className="image-link">
+                        <img className="image" src={img} alt={img} />
+                      </Link>
+
                       <button
                         className="btn-inCart"
                         disabled={inCart ? true : false}
-                        onClick={() => value.addToCart(id)}
+                        onClick={() => data.addToCart(id)}
                       >
                         {inCart ? (
                           "inCart"
@@ -41,10 +41,10 @@ export default function Product(props) {
                           ></i>
                         )}
                       </button>
-                    );
-                  }}
-                </ProductContextConsumer>
-              </div>
+                    </div>
+                  );
+                }}
+              </ProductContextConsumer>
               <div className="footer-card">
                 <h2 className="fruit-name">{name}</h2>
                 <span className="fruit-price">

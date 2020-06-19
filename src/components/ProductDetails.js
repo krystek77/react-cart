@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Title from "./Title";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -7,6 +7,12 @@ import { ProductContextConsumer } from "../context/product";
 import { ButtonWrapper } from "./Button";
 
 export default function ProductDetails(props) {
+  useEffect(() => {
+    console.log("[ProductDetails]-mounted");
+    return () => {
+      console.log("[ProductDetails]-unmounted");
+    };
+  });
   return (
     <div className="container">
       <ThemeContextConsumer>
@@ -14,7 +20,6 @@ export default function ProductDetails(props) {
           return (
             <ProductContextConsumer>
               {(data) => {
-                // console.log(data);
                 const {
                   productDetails: {
                     id,
