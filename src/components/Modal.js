@@ -79,7 +79,7 @@ const ModalWrapper = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: ${(props) => props.value.theme.primary.light};
+  background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   flex-direction: column;
   justify-content: center;
