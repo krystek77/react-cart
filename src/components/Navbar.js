@@ -55,6 +55,7 @@ export default function Navbar() {
                 </ButtonWrapper>
               </Link>
               <ButtonWrapper
+                navbar
                 className="control-btn"
                 value={value}
                 onClick={value.toggleTheme}
@@ -150,6 +151,8 @@ const NavWrapper = styled.nav`
   .controls {
     padding-top: 0.8rem;
     padding-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
     @media (min-width: 768px) {
       padding-top: 0rem;
       padding-bottom: 0rem;

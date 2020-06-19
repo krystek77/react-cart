@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const ButtonWrapper = styled.button`
-  font-size: 1.1rem;
-  padding: 0.5rem 0.8rem;
+  font-size: ${(props) => (props.navbar ? "1.6rem" : "1.1rem")};
+  padding: ${(props) => (props.navbar ? "0" : "0.5rem 0.8rem")};
   margin: 0.2rem;
   border-radius: 0.2rem;
   cursor: pointer;
@@ -13,11 +13,15 @@ export const ButtonWrapper = styled.button`
   background-color: ${(props) =>
     props.modal
       ? props.value.theme.primary.main
+      : props.navbar
+      ? "transparent"
       : props.value.theme.secondary.main};
   border: 1px solid
     ${(props) =>
       props.modal
         ? props.value.theme.primary.dark
+        : props.navbar
+        ? "transparent"
         : props.value.theme.secondary.dark};
   transition: all 0.3s ease-in-out;
   &:disabled {
