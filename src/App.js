@@ -8,11 +8,13 @@ import ProductDetails from "./components/ProductDetails";
 import Signin from "./components/Signin";
 import Signup from "./components/Signup";
 import Cart from "./components/Cart/Cart";
+import Modal from "./components/Modal";
 
 class App extends React.Component {
   render() {
     return (
       <div className="App">
+        <Modal />
         <Navbar />
         <Switch>
           <Route path="/signin" component={Signin} />

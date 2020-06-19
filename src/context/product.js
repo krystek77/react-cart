@@ -5,6 +5,7 @@ const ProductContext = React.createContext({
   products: [],
   productDetails: {},
   cart: [],
+  isModalOpen: false,
 });
 
 class ProductContextProvider extends React.Component {
@@ -14,6 +15,7 @@ class ProductContextProvider extends React.Component {
       products: [],
       productDetails: {},
       cart: [],
+      isModalOpen: false,
     };
   }
 
@@ -43,14 +45,16 @@ class ProductContextProvider extends React.Component {
   };
 
   shouldComponentUpdate(nextProps, nextState) {
-    return this.state.productDetails !== nextState.productDetails;
+    return (
+      this.state.productDetails !== nextState.productDetails ||
+      this.state.isModalOpen !== nextState.isModalOpen
+    );
   }
   getProduct = (id) => {
     return this.state.products.find((product) => product.id === id);
   };
 
   addToCart = (id) => {
-    console.log("Add to cart", id);
     const tempProducts = [...this.state.products];
     const index = tempProducts.indexOf(this.getProduct(id));
     const tempProduct = { ...tempProducts[index] };
@@ -74,6 +78,14 @@ class ProductContextProvider extends React.Component {
       };
     });
   };
+
+  openModal = () => {
+    this.setState({ isModalOpen: true });
+  };
+  closeModal = () => {
+    this.setState({ isModalOpen: false });
+  };
+
   render() {
     return (
       <ProductContext.Provider
@@ -81,6 +93,8 @@ class ProductContextProvider extends React.Component {
           ...this.state,
           addToCart: this.addToCart,
           displayDetails: this.handleProductDetails,
+          openModal: this.openModal,
+          closeModal: this.closeModal,
         }}
       >
         {this.props.children}

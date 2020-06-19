@@ -30,7 +30,10 @@ export default function Product(props) {
                       <button
                         className="btn-inCart"
                         disabled={inCart ? true : false}
-                        onClick={() => data.addToCart(id)}
+                        onClick={() => {
+                          data.addToCart(id);
+                          data.openModal();
+                        }}
                       >
                         {inCart ? (
                           "inCart"

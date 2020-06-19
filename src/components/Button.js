@@ -6,9 +6,19 @@ export const ButtonWrapper = styled.button`
   margin: 0.2rem;
   border-radius: 0.2rem;
   cursor: pointer;
-  color: ${(props) => props.value.theme.secondary.text};
-  background-color: ${(props) => props.value.theme.secondary.main};
-  border: 1px solid ${(props) => props.value.theme.secondary.dark};
+  color: ${(props) =>
+    props.modal
+      ? props.value.theme.primary.text
+      : props.value.theme.secondary.text};
+  background-color: ${(props) =>
+    props.modal
+      ? props.value.theme.primary.main
+      : props.value.theme.secondary.main};
+  border: 1px solid
+    ${(props) =>
+      props.modal
+        ? props.value.theme.primary.dark
+        : props.value.theme.secondary.dark};
   transition: all 0.3s ease-in-out;
   &:disabled {
     background-color: grey;
@@ -18,7 +28,10 @@ export const ButtonWrapper = styled.button`
     cursor: none;
   }
   &:hover {
-    color: ${(props) => props.value.theme.secondary.dark};
+    color: ${(props) =>
+      props.modal
+        ? props.value.theme.primary.dark
+        : props.value.theme.secondary.dark};
   }
   &:focus {
     outline: none;
