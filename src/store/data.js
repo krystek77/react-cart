@@ -17,7 +17,7 @@ export const products = [
     price: 1,
     count: 0,
     total: 0,
-    inCart: true,
+    inCart: false,
     description:
       "Objectively harness interactive materials without standards compliant materials. Conveniently deploy business intellectual capital rather than cutting-edge materials. Globally develop parallel vortals through just.",
     name: "Banana fresh",
