@@ -40,6 +40,9 @@ class ProductContextProvider extends React.Component {
     );
   };
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.state.productDetails !== nextState.productDetails;
+  }
   getProduct = (id) => {
     return this.state.products.find((product) => product.id === id);
   };
@@ -48,19 +51,12 @@ class ProductContextProvider extends React.Component {
     console.log("Add to cart", id);
   };
   handleProductDetails = (id) => {
-    // console.log("Display product details", id);
-    // console.log(this.getProduct(id));
     const productDetails = this.getProduct(id);
-    this.setState(
-      () => {
-        return {
-          productDetails: productDetails,
-        };
-      },
-      () => {
-        // console.log(this.state.productDetails);
-      }
-    );
+    this.setState(() => {
+      return {
+        productDetails: productDetails,
+      };
+    });
   };
   render() {
     return (
