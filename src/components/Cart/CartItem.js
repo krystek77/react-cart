@@ -4,7 +4,17 @@ import { ButtonWrapper } from "../Button";
 import { ThemeContextConsumer } from "../../context/theme";
 
 export default function CartItem(props) {
-  const { id, img, name, price, count, total } = props;
+  const {
+    id,
+    img,
+    name,
+    price,
+    count,
+    total,
+    remove,
+    increase,
+    decrease,
+  } = props;
   return (
     <ThemeContextConsumer>
       {(theme) => {
@@ -27,25 +37,18 @@ export default function CartItem(props) {
                   <ButtonWrapper
                     cart
                     value={theme}
-                    onClick={() => console.log("Decrease", id)}
+                    onClick={() => decrease(id)}
                   >
                     <i className="fas fa-minus"></i>
                   </ButtonWrapper>
                   <span className="value count">{count}</span>
-                  <ButtonWrapper
-                    cart
-                    value={theme}
-                    onClick={() => console.log("Increase", id)}
-                  >
+                  <ButtonWrapper cart value={theme} onClick={() => increase(id)}>
                     <i className="fas fa-plus"></i>
                   </ButtonWrapper>
                 </div>
               </div>
               <div className="field col-10 mx-auto col-lg-2">
-                <span
-                  className="remove-btn"
-                  onClick={() => console.log("remove from cart", id)}
-                >
+                <span className="remove-btn" onClick={() => remove(id)}>
                   <i className="fas fa-trash-alt"></i>
                 </span>
               </div>

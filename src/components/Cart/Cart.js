@@ -18,7 +18,15 @@ export default function Cart() {
             <React.Fragment>
               <CartHeader />
               {data.cart.map((item) => {
-                return <CartItem key={item.id} {...item} />;
+                return (
+                  <CartItem
+                    key={item.id}
+                    {...item}
+                    remove={data.removeProduct}
+                    increase={data.increaseProduct}
+                    decrease={data.decreaseProduct}
+                  />
+                );
               })}
               <ThemeContextConsumer>
                 {(theme) => (

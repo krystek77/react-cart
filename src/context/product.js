@@ -105,6 +105,30 @@ class ProductContextProvider extends React.Component {
     });
   };
 
+  handleIncreaseProduct = (id) => {
+    console.log("Increase ...", id);
+  };
+  handleDecreaseProduct = (id) => {
+    console.log("Decrease ...", id);
+  };
+  handleRemoveProduct = (id) => {
+    const updatedCart = this.state.cart.filter((product) => product.id !== id);
+    const tempProducts = [...this.state.products];
+    const index = tempProducts.indexOf(this.getProduct(id));
+    const tempProduct = { ...tempProducts[index] };
+    tempProduct.inCart = false;
+    tempProduct.count = 0;
+    tempProduct.total = 0;
+    tempProducts[index] = tempProduct;
+
+    this.setState(() => {
+      return {
+        cart: updatedCart,
+        products: tempProducts,
+      };
+    });
+  };
+
   render() {
     return (
       <ProductContext.Provider
@@ -115,6 +139,9 @@ class ProductContextProvider extends React.Component {
           openModal: this.openModal,
           closeModal: this.closeModal,
           clearCart: this.handleClearCart,
+          increaseProduct: this.handleIncreaseProduct,
+          decreaseProduct: this.handleDecreaseProduct,
+          removeProduct: this.handleRemoveProduct,
         }}
       >
         {this.props.children}
