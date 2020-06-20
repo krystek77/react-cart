@@ -48,7 +48,8 @@ class ProductContextProvider extends React.Component {
     return (
       this.state.productDetails !== nextState.productDetails ||
       this.state.isModalOpen !== nextState.isModalOpen ||
-      this.state.cart.length !== nextState.cart.length
+      this.state.cart.length !== nextState.cart.length ||
+      this.state.cart !== nextState.cart
     );
   }
   getProduct = (id) => {
@@ -91,7 +92,7 @@ class ProductContextProvider extends React.Component {
 
   handleClearCart = () => {
     const tempProducts = this.state.products.map((product) => {
-      const tempProduct = { ...product };
+      const tempProduct = product;
       tempProduct.inCart = false;
       tempProduct.count = 0;
       tempProduct.total = 0;
@@ -107,9 +108,36 @@ class ProductContextProvider extends React.Component {
 
   handleIncreaseProduct = (id) => {
     console.log("Increase ...", id);
+    const tempCart = [...this.state.cart];
+    const index = tempCart.findIndex((product) => product.id === id);
+    const tempProduct = { ...tempCart[index] };
+    tempProduct.count = tempProduct.count + 1;
+    tempProduct.total = tempProduct.count * tempProduct.price;
+    tempCart[index] = tempProduct;
+    this.setState(() => {
+      return {
+        cart: tempCart,
+      };
+    });
   };
+
   handleDecreaseProduct = (id) => {
     console.log("Decrease ...", id);
+    const tempCart = [...this.state.cart];
+    const index = tempCart.findIndex((product) => product.id === id);
+    const tempProduct = { ...tempCart[index] };
+    tempProduct.count = tempProduct.count - 1;
+    if (tempProduct.count === 0) {
+      this.handleRemoveProduct(id);
+    } else {
+      tempProduct.total = tempProduct.total - tempProduct.price;
+      tempCart[index] = tempProduct;
+      this.setState(() => {
+        return {
+          cart: tempCart,
+        };
+      });
+    }
   };
   handleRemoveProduct = (id) => {
     const updatedCart = this.state.cart.filter((product) => product.id !== id);
