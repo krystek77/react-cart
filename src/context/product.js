@@ -14,7 +14,7 @@ class ProductContextProvider extends React.Component {
     this.state = {
       products: [],
       productDetails: {},
-      cart: [],
+      cart: products, //temporary
       isModalOpen: false,
     };
   }

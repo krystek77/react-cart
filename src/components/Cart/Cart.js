@@ -2,6 +2,7 @@ import React from "react";
 import Title from "../Title";
 import CartItem from "./CartItem";
 import CartHeader from "./CartHeader";
+import Summary from "./Summary";
 import { ProductContextConsumer } from "../../context/product";
 import { ThemeContextConsumer } from "../../context/theme";
 import { ButtonWrapper } from "../Button";
@@ -30,13 +31,20 @@ export default function Cart() {
               })}
               <ThemeContextConsumer>
                 {(theme) => (
-                  <ButtonWrapper
-                    clear
-                    value={theme}
-                    onClick={() => data.clearCart()}
-                  >
-                    Clear cart
-                  </ButtonWrapper>
+                  <React.Fragment>
+                    <div className="row">
+                      <ButtonWrapper
+                        clear
+                        value={theme}
+                        onClick={() => data.clearCart()}
+                      >
+                        Clear cart
+                      </ButtonWrapper>
+                    </div>
+                    <div className="row">
+                      <Summary value={theme} />
+                    </div>
+                  </React.Fragment>
                 )}
               </ThemeContextConsumer>
             </React.Fragment>
