@@ -3,6 +3,8 @@ import Title from "../Title";
 import CartItem from "./CartItem";
 import CartHeader from "./CartHeader";
 import { ProductContextConsumer } from "../../context/product";
+import { ThemeContextConsumer } from "../../context/theme";
+import { ButtonWrapper } from "../Button";
 
 export default function Cart() {
   return (
@@ -18,17 +20,29 @@ export default function Cart() {
               {data.cart.map((item) => {
                 return <CartItem key={item.id} {...item} />;
               })}
-              ;
+              <ThemeContextConsumer>
+                {(theme) => (
+                  <ButtonWrapper
+                    clear
+                    value={theme}
+                    onClick={() => console.log("Clear cart")}
+                  >
+                    Clear cart
+                  </ButtonWrapper>
+                )}
+              </ThemeContextConsumer>
             </React.Fragment>
           );
         }
         return (
-          <div className="container">
-            <div className="row">
-              <Title title={title} />
+          <React.Fragment>
+            <div className="container">
+              <div className="row">
+                <Title title={title} />
+              </div>
             </div>
             <div className="container">{content}</div>
-          </div>
+          </React.Fragment>
         );
       }}
     </ProductContextConsumer>
