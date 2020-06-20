@@ -47,7 +47,8 @@ class ProductContextProvider extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     return (
       this.state.productDetails !== nextState.productDetails ||
-      this.state.isModalOpen !== nextState.isModalOpen
+      this.state.isModalOpen !== nextState.isModalOpen ||
+      this.state.cart.length !== nextState.cart.length
     );
   }
   getProduct = (id) => {
@@ -85,6 +86,24 @@ class ProductContextProvider extends React.Component {
   closeModal = () => {
     this.setState({ isModalOpen: false });
   };
+  compose = (...func) => (x) => func.reduce((acc, fn) => fn(acc), x);
+  compose = (...func) => (x) => func.reduceRight((acc, fn) => fn(acc), x);
+
+  handleClearCart = () => {
+    const tempProducts = this.state.products.map((product) => {
+      const tempProduct = { ...product };
+      tempProduct.inCart = false;
+      tempProduct.count = 0;
+      tempProduct.total = 0;
+      return tempProduct;
+    });
+    this.setState(() => {
+      return {
+        products: tempProducts,
+        cart: [],
+      };
+    });
+  };
 
   render() {
     return (
@@ -95,6 +114,7 @@ class ProductContextProvider extends React.Component {
           displayDetails: this.handleProductDetails,
           openModal: this.openModal,
           closeModal: this.closeModal,
+          clearCart: this.handleClearCart,
         }}
       >
         {this.props.children}

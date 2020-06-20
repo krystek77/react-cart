@@ -25,7 +25,7 @@ export default function Cart() {
                   <ButtonWrapper
                     clear
                     value={theme}
-                    onClick={() => console.log("Clear cart")}
+                    onClick={() => data.clearCart()}
                   >
                     Clear cart
                   </ButtonWrapper>
