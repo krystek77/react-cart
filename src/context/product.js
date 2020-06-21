@@ -6,6 +6,7 @@ const ProductContext = React.createContext({
   productDetails: {},
   cart: [],
   isModalOpen: false,
+  total: 0,
 });
 
 class ProductContextProvider extends React.Component {
@@ -14,8 +15,9 @@ class ProductContextProvider extends React.Component {
     this.state = {
       products: [],
       productDetails: {},
-      cart: products, //temporary
+      cart: [],
       isModalOpen: false,
+      total: 0,
     };
   }
 
@@ -49,7 +51,8 @@ class ProductContextProvider extends React.Component {
       this.state.productDetails !== nextState.productDetails ||
       this.state.isModalOpen !== nextState.isModalOpen ||
       this.state.cart.length !== nextState.cart.length ||
-      this.state.cart !== nextState.cart
+      this.state.cart !== nextState.cart ||
+      this.state.total !== nextState.total
     );
   }
   getProduct = (id) => {
@@ -64,13 +67,18 @@ class ProductContextProvider extends React.Component {
     tempProduct.count = 1;
     tempProduct.total = tempProduct.price;
     tempProducts[index] = tempProduct;
-    this.setState(() => {
-      return {
-        products: tempProducts,
-        productDetails: tempProduct,
-        cart: [...this.state.cart, tempProduct],
-      };
-    });
+    this.setState(
+      () => {
+        return {
+          products: tempProducts,
+          productDetails: tempProduct,
+          cart: [...this.state.cart, tempProduct],
+        };
+      },
+      () => {
+        this.countTotal();
+      }
+    );
   };
   handleProductDetails = (id) => {
     const productDetails = this.getProduct(id);
@@ -102,6 +110,7 @@ class ProductContextProvider extends React.Component {
       return {
         products: tempProducts,
         cart: [],
+        total: 0,
       };
     });
   };
@@ -114,11 +123,17 @@ class ProductContextProvider extends React.Component {
     tempProduct.count = tempProduct.count + 1;
     tempProduct.total = tempProduct.count * tempProduct.price;
     tempCart[index] = tempProduct;
-    this.setState(() => {
-      return {
-        cart: tempCart,
-      };
-    });
+    this.setState(
+      () => {
+        return {
+          cart: tempCart,
+        };
+      },
+      () => {
+        console.log("Callbak setState - counTotal");
+        this.countTotal();
+      }
+    );
   };
 
   handleDecreaseProduct = (id) => {
@@ -132,11 +147,16 @@ class ProductContextProvider extends React.Component {
     } else {
       tempProduct.total = tempProduct.total - tempProduct.price;
       tempCart[index] = tempProduct;
-      this.setState(() => {
-        return {
-          cart: tempCart,
-        };
-      });
+      this.setState(
+        () => {
+          return {
+            cart: tempCart,
+          };
+        },
+        () => {
+          this.countTotal();
+        }
+      );
     }
   };
   handleRemoveProduct = (id) => {
@@ -149,15 +169,29 @@ class ProductContextProvider extends React.Component {
     tempProduct.total = 0;
     tempProducts[index] = tempProduct;
 
-    this.setState(() => {
-      return {
-        cart: updatedCart,
-        products: tempProducts,
-      };
+    this.setState(
+      () => {
+        return {
+          cart: updatedCart,
+          products: tempProducts,
+        };
+      },
+      () => {
+        this.countTotal();
+      }
+    );
+  };
+  countTotal = () => {
+    console.log("counTotal");
+    const total = this.state.cart
+      .map(({ total }) => total)
+      .reduce((sum, item) => sum + item, 0);
+    this.setState({
+      total,
     });
   };
-
   render() {
+    console.log("[ProductContextProvider]-render");
     return (
       <ProductContext.Provider
         value={{
