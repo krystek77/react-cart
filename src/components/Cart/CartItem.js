@@ -42,7 +42,11 @@ export default function CartItem(props) {
                     <i className="fas fa-minus"></i>
                   </ButtonWrapper>
                   <span className="value count">{count}</span>
-                  <ButtonWrapper cart value={theme} onClick={() => increase(id)}>
+                  <ButtonWrapper
+                    cart
+                    value={theme}
+                    onClick={() => increase(id)}
+                  >
                     <i className="fas fa-plus"></i>
                   </ButtonWrapper>
                 </div>
@@ -70,12 +74,16 @@ const CartItemWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    border-right: 1px solid ${(props) => props.value.theme.secondary.dark};
-    border-bottom: 1px solid ${(props) => props.value.theme.secondary.dark};
+    @media (min-width: 992px) {
+      border-right: 1px solid ${(props) => props.value.theme.secondary.dark};
+      border-bottom: 1px solid ${(props) => props.value.theme.secondary.dark};
+    }
     font-size: 1.3rem;
   }
   .field:first-child {
-    border-left: 1px solid ${(props) => props.value.theme.secondary.dark};
+    @media (min-width: 992px) {
+      border-left: 1px solid ${(props) => props.value.theme.secondary.dark};
+    }
   }
   .image-wrapper {
     width: 80px;
