@@ -4,6 +4,10 @@ import styled from "styled-components";
 
 const Input = (props) => {
   let input = null;
+  let inputClass = "inputElement";
+  if (!props.config.valid && props.config.touched)
+    inputClass = "inputElement invalid";
+
   switch (props.config.elementType) {
     case "input":
       input = (
@@ -15,7 +19,7 @@ const Input = (props) => {
           placeholder={props.config.elementConfig.placeholder}
           onChange={props.changed}
           checked={props.config.checked}
-          className="inputElement"
+          className={inputClass}
         />
       );
       break;
@@ -113,6 +117,9 @@ const InputWrapper = styled.div`
     font-weight: 300;
     display: inline-block;
     padding-left: 1rem;
+  }
+  .inputElement.invalid {
+    background-color: red;
   }
 `;
 export default Input;

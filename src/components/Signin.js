@@ -20,6 +20,11 @@ export default class Signin extends React.Component {
             label: "",
           },
           value: "",
+          validation: {
+            required: true,
+          },
+          valid: false,
+          touched: false,
         },
         password: {
           elementType: "input",
@@ -31,6 +36,13 @@ export default class Signin extends React.Component {
             label: "",
           },
           value: "",
+          validation: {
+            required: true,
+            minLength: 8,
+            maxLength: 10,
+          },
+          valid: false,
+          touched: false,
         },
         accept: {
           elementType: "input",
@@ -43,28 +55,59 @@ export default class Signin extends React.Component {
           },
           checked: true,
           value: "",
+          valid: true,
+          validation: {
+            checked: true,
+          },
         },
       },
+      totalFormValid: false,
     };
   }
+
+  validationInput = (value, rules) => {
+    let valid = true;
+    if (rules.required) valid = value.trim() !== "" && valid;
+    if (rules.minLength) valid = value.length >= rules.minLength && valid;
+    if (rules.maxLength) valid = value.length <= rules.maxLength && valid;
+    if (rules.checked) {
+      valid = value === rules.checked && valid;
+      console.log(valid);
+    }
+    return valid;
+  };
+
   handleInput = (event, id) => {
     const updatedFormData = { ...this.state.signinForm };
     const updatedFormDataInput = { ...updatedFormData[id] };
-    updatedFormDataInput.value = event.target.value;
 
-    if (updatedFormDataInput.elementConfig.type === "checkbox") {
+    if (event.target.type === "checkbox") {
       updatedFormDataInput.checked = event.target.checked;
-      this.setState({
-        signinForm: updatedFormData,
-      });
+      updatedFormDataInput.valid = this.validationInput(
+        updatedFormDataInput.checked,
+        updatedFormDataInput.validation
+      );
+      console.log("change checkbox");
+    } else {
+      updatedFormDataInput.value = event.target.value;
+      updatedFormDataInput.touched = true;
+      updatedFormDataInput.valid = this.validationInput(
+        updatedFormDataInput.value,
+        updatedFormDataInput.validation
+      );
     }
     updatedFormData[id] = updatedFormDataInput;
 
+    let totalFormValid = true;
+    for (let key in updatedFormData) {
+      totalFormValid = updatedFormData[key].valid && totalFormValid;
+    }
     this.setState({
       signinForm: updatedFormData,
+      totalFormValid,
     });
   };
-  
+
   formatFormData = (formData) => {
     const formattedFormData = [];
     for (let key in formData) {
@@ -107,6 +150,7 @@ export default class Signin extends React.Component {
                   <h2 className="form-title">LOGIN</h2>
                   {contentForm}
                   <ButtonWrapper
+                    disabled={this.state.totalFormValid ? false : true}
                     value={theme}
                     className="form-btn"
                     type="submit"
