@@ -42,7 +42,7 @@ export default function Cart() {
                       </ButtonWrapper>
                     </div>
                     <div className="row">
-                      <Summary value={theme} />
+                      <Summary value={theme} total={data.total} />
                     </div>
                   </React.Fragment>
                 )}

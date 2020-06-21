@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 
 export default function Summary(props) {
-  const total = 100;
-  const { value } = props;
+  const { value, total } = props;
+  useEffect(() => {
+    console.log("[Summary] - summary mounted", total);
+    return () => {
+      console.log("[Summary] - summary unmounted", total);
+    };
+  });
   return (
     <SummaryWrapper value={value}>
       <span className="total">
