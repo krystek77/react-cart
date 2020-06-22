@@ -183,31 +183,44 @@ export default class Signup extends React.Component {
                   <AuthContextConsumer>
                     {(auth) => {
                       return (
-                        <FormWrapper
-                          value={theme}
-                          onSubmit={(event) =>
-                            this.submitSignupForm(
-                              event,
-                              {
-                                email: this.state.signupForm.email.value,
-                                password: this.state.signupForm.password.value,
-                              },
-                              auth.signup
-                            )
-                          }
-                        >
-                          <h2 className="form-title">SIGNUP</h2>
-                          {contentForm}
-                          <ButtonWrapper
-                            disabled={this.state.totalFormValid ? false : true}
+                        <React.Fragment>
+                          <FormWrapper
                             value={theme}
-                            className="form-btn"
-                            type="submit"
+                            onSubmit={(event) =>
+                              this.submitSignupForm(
+                                event,
+                                {
+                                  email: this.state.signupForm.email.value,
+                                  password: this.state.signupForm.password
+                                    .value,
+                                },
+                                auth.signup
+                              )
+                            }
                           >
-                            <i className="fas fa-sign-in-alt"></i>
-                            <span>SIGNUP</span>
-                          </ButtonWrapper>
-                        </FormWrapper>
+                            <h2 className="form-title">SIGNUP</h2>
+                            {contentForm}
+                            <ButtonWrapper
+                              disabled={
+                                this.state.totalFormValid ? false : true
+                              }
+                              value={theme}
+                              className="form-btn"
+                              type="submit"
+                            >
+                              <i className="fas fa-sign-in-alt"></i>
+                              <span>SIGNUP</span>
+                            </ButtonWrapper>
+                          </FormWrapper>
+                          {Object.keys(auth.error).length > 0 && (
+                            <ErrorMessageWrapper
+                              value={theme}
+                              className="error-message"
+                            >
+                              Error: {auth.error.message}
+                            </ErrorMessageWrapper>
+                          )}
+                        </React.Fragment>
                       );
                     }}
                   </AuthContextConsumer>
@@ -220,6 +233,12 @@ export default class Signup extends React.Component {
     );
   }
 }
+
+const ErrorMessageWrapper = styled.div`
+  padding: 1rem;
+  font-size: 1.2rem;
+  color: ${(props) => props.value.theme.secondary.dark};
+`;
 
 const FormWrapper = styled.form`
   background-color: ${(props) => props.value.theme.primary.main};

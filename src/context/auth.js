@@ -10,7 +10,7 @@ const AuthContext = React.createContext({
   signupFail: () => {},
 });
 
-const SIGNUP_URL = `https://identitytoolkit.googleapis.com/v1/accounts:signUpa?key=${process.env.REACT_APP_FIREBASE_API_KEY}`;
+const SIGNUP_URL = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_API_KEY}`;
 class AuthContextProvider extends Component {
   constructor(props) {
     super(props);
