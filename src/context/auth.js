@@ -22,11 +22,19 @@ class AuthContextProvider extends Component {
       email: "",
     };
   }
+
+  componentDidMount() {
+    console.log("[auth.js]-mounted");
+    this.checkAuthState();
+  }
+
   checkExpiresInTime = (expiresInTime) => {
-    setTimeout(this.signout, expiresInTime);
+    console.log("check expiredIn", expiresInTime);
+    setTimeout(this.signout, expiresInTime * 1000);
   };
+
   signout = () => {
-    console.log("User was signout after elapsed time");
+    console.log("Signout user");
     this.setState(() => {
       return {
         isLoading: false,
@@ -36,6 +44,10 @@ class AuthContextProvider extends Component {
         email: "",
       };
     });
+    localStorage.removeItem("idUser");
+    localStorage.removeItem("idToken");
+    localStorage.removeItem("email");
+    localStorage.removeItem("expiresInTimeDate");
   };
 
   signupStart = () => {
@@ -96,6 +108,13 @@ class AuthContextProvider extends Component {
               isLoading: false,
             };
           });
+          const expiresInTimeDate = new Date(
+            new Date().getTime() + data.expiresIn * 1000
+          );
+          localStorage.setItem("idUser", data.localId);
+          localStorage.setItem("idToken", data.idToken);
+          localStorage.setItem("email", data.email);
+          localStorage.setItem("expiresInTimeDate", expiresInTimeDate);
           this.checkExpiresInTime(data.expiresIn);
         }
       } catch (err) {
@@ -103,6 +122,34 @@ class AuthContextProvider extends Component {
       }
     };
     signupUser();
+  };
+
+  checkAuthState = () => {
+    const idToken = localStorage.getItem("idToken");
+    console.log(idToken);
+    if (!idToken) {
+      this.signout();
+    } else {
+      const expiresInTimeDate = new Date(
+        localStorage.getItem("expiresInTimeDate")
+      );
+      console.log(expiresInTimeDate);
+      if (expiresInTimeDate > new Date()) {
+        console.log("Signin user authomatically");
+        const idUser = localStorage.getItem("idUser");
+        const email = localStorage.getItem("email");
+        this.setState(() => {
+          return { idUser, email, idToken };
+        });
+        console.log(expiresInTimeDate - new Date());
+        this.checkExpiresInTime(
+          (expiresInTimeDate.getTime() - new Date().getTime()) / 1000
+        );
+      } else {
+        console.log("Signout user.... if time elapsed");
+        this.signout();
+      }
+    }
   };
 
   render() {
