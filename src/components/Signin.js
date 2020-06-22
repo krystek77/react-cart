@@ -53,26 +53,6 @@ export default class Signin extends React.Component {
           valid: false,
           touched: false,
         },
-        accept: {
-          elementType: "input",
-          elementConfig: {
-            type: "checkbox",
-            name: "accept",
-            id: "accept",
-            placeholder: "",
-            label: "I agree to the terms",
-          },
-          checked: true,
-          value: "",
-          valid: true,
-          touched: false,
-          validation: {
-            checked: true,
-          },
-          error: {
-            message: "You have to agree to the terms",
-          },
-        },
       },
       totalFormValid: false,
     };
@@ -83,7 +63,7 @@ export default class Signin extends React.Component {
     if (rules.required) valid = value.trim() !== "" && valid;
     if (rules.minLength) valid = value.length >= rules.minLength && valid;
     if (rules.maxLength) valid = value.length <= rules.maxLength && valid;
-    if (rules.checked) valid = value === rules.checked && valid;
+    // if (rules.checked) valid = value === rules.checked && valid;
     if (rules.regExp) valid = value.match(rules.regExp) && valid;
 
     return valid;
@@ -93,21 +73,13 @@ export default class Signin extends React.Component {
     const updatedFormData = { ...this.state.signinForm };
     const updatedFormDataInput = { ...updatedFormData[id] };
 
-    if (event.target.type === "checkbox") {
-      updatedFormDataInput.checked = event.target.checked;
-      updatedFormDataInput.touched = true;
-      updatedFormDataInput.valid = this.validationInput(
-        updatedFormDataInput.checked,
-        updatedFormDataInput.validation
-      );
-    } else {
-      updatedFormDataInput.value = event.target.value;
-      updatedFormDataInput.touched = true;
-      updatedFormDataInput.valid = this.validationInput(
-        updatedFormDataInput.value,
-        updatedFormDataInput.validation
-      );
-    }
+    updatedFormDataInput.value = event.target.value;
+    updatedFormDataInput.touched = true;
+    updatedFormDataInput.valid = this.validationInput(
+      updatedFormDataInput.value,
+      updatedFormDataInput.validation
+    );
+
     updatedFormData[id] = updatedFormDataInput;
 
     let totalFormValid = true;
