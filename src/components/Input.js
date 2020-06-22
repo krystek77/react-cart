@@ -51,7 +51,9 @@ const Input = (props) => {
               </label>
             )}
             {input}
-            {false && <span className="error">error message</span>}
+            {!props.config.valid && props.config.touched && (
+              <span className="error">{props.config.error.message}</span>
+            )}
           </InputWrapper>
         );
       }}
@@ -112,14 +114,18 @@ const InputWrapper = styled.div`
     position: absolute;
     bottom: 0.2rem;
     left: 0;
-    color: ${(props) => props.value.theme.secondary.dark};
+    color: ${(props) => props.value.theme.secondary.text};
     font-size: 0.8rem;
     font-weight: 300;
     display: inline-block;
     padding-left: 1rem;
+    margin-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 0.2rem;
+    background-color: ${(props) => props.value.theme.secondary.light};
   }
   .inputElement.invalid {
-    background-color: red;
+    background-color: ${(props) => props.value.theme.secondary.dark};
   }
 `;
 export default Input;

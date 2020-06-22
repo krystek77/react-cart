@@ -22,6 +22,10 @@ export default class Signin extends React.Component {
           value: "",
           validation: {
             required: true,
+            regExp: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+          },
+          error: {
+            message: "It is not valid email",
           },
           valid: false,
           touched: false,
@@ -40,6 +44,11 @@ export default class Signin extends React.Component {
             required: true,
             minLength: 8,
             maxLength: 10,
+            regExp: /((?=.*\d)(?=.*[a-zA-Z])(?=.*[@!-'()+--/:?[-`{}~]).{8,10})/,
+          },
+          error: {
+            message:
+              "Password must contain one upper case letter, special character, number [8-10].  ",
           },
           valid: false,
           touched: false,
@@ -51,13 +60,17 @@ export default class Signin extends React.Component {
             name: "accept",
             id: "accept",
             placeholder: "",
-            label: "Akceptuję regulamin",
+            label: "I agree to the terms",
           },
           checked: true,
           value: "",
           valid: true,
+          touched: false,
           validation: {
             checked: true,
+          },
+          error: {
+            message: "You have to agree to the terms",
           },
         },
       },
@@ -70,10 +83,9 @@ export default class Signin extends React.Component {
     if (rules.required) valid = value.trim() !== "" && valid;
     if (rules.minLength) valid = value.length >= rules.minLength && valid;
     if (rules.maxLength) valid = value.length <= rules.maxLength && valid;
-    if (rules.checked) {
-      valid = value === rules.checked && valid;
-      console.log(valid);
-    }
+    if (rules.checked) valid = value === rules.checked && valid;
+    if (rules.regExp) valid = value.match(rules.regExp) && valid;
+
     return valid;
   };
 
@@ -83,11 +95,11 @@ export default class Signin extends React.Component {
 
     if (event.target.type === "checkbox") {
       updatedFormDataInput.checked = event.target.checked;
+      updatedFormDataInput.touched = true;
       updatedFormDataInput.valid = this.validationInput(
         updatedFormDataInput.checked,
         updatedFormDataInput.validation
       );
-      console.log("change checkbox");
     } else {
       updatedFormDataInput.value = event.target.value;
       updatedFormDataInput.touched = true;
