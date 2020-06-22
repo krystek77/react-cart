@@ -20,9 +20,23 @@ class AuthContextProvider extends Component {
       idUser: "",
       idToken: "",
       email: "",
-      expiresIn: "",
     };
   }
+  checkExpiresInTime = (expiresInTime) => {
+    setTimeout(this.signout, expiresInTime);
+  };
+  signout = () => {
+    console.log("User was signout after elapsed time");
+    this.setState(() => {
+      return {
+        isLoading: false,
+        error: {},
+        idUser: "",
+        idToken: "",
+        email: "",
+      };
+    });
+  };
 
   signupStart = () => {
     console.log("Start auth");
@@ -40,7 +54,6 @@ class AuthContextProvider extends Component {
         idUser: "",
         idToken: "",
         email: "",
-        espiresIn: "",
         isLoading: false,
       };
     });
@@ -79,11 +92,11 @@ class AuthContextProvider extends Component {
               idUser: data.localId,
               idToken: data.idToken,
               email: data.email,
-              espiresIn: data.expiresIn,
               error: {},
               isLoading: false,
             };
           });
+          this.checkExpiresInTime(data.expiresIn);
         }
       } catch (err) {
         this.signupBadRequest(err);
