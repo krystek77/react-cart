@@ -4,13 +4,14 @@ const AuthContext = React.createContext({
   isLoading: false,
   error: {},
   idUser: "",
-  token: "",
-  signupStart: () => {},
+  idToken: "",
+  email: "",
   signup: () => {},
-  signupFail: () => {},
+  signin: () => {},
 });
 
 const SIGNUP_URL = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_API_KEY}`;
+const SIGNIN_URL = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_API_KEY}`;
 class AuthContextProvider extends Component {
   constructor(props) {
     super(props);
@@ -50,14 +51,14 @@ class AuthContextProvider extends Component {
     localStorage.removeItem("expiresInTimeDate");
   };
 
-  signupStart = () => {
+  authStart = () => {
     console.log("Start auth");
     this.setState(() => {
       return { isLoading: true };
     });
   };
 
-  signupFail = (err) => {
+  authFail = (err) => {
     const { code, message } = err;
     const error = { code, message };
     this.setState(() => {
@@ -71,7 +72,7 @@ class AuthContextProvider extends Component {
     });
   };
 
-  signupBadRequest = (err) => {
+  authBadRequest = (err) => {
     const error = { message: err.message };
     this.setState(() => {
       return {
@@ -81,12 +82,12 @@ class AuthContextProvider extends Component {
     });
   };
 
-  signup = (dataAuth) => {
-    this.signupStart();
+  signin = (dataAuth) => {
+    this.authStart();
 
-    const signupUser = async () => {
+    const signinUser = async () => {
       try {
-        const response = await fetch(SIGNUP_URL, {
+        const response = await fetch(SIGNIN_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -97,7 +98,7 @@ class AuthContextProvider extends Component {
         });
         const data = await response.json();
         if (data.error) {
-          this.signupFail(data.error);
+          this.authFail(data.error);
         } else {
           this.setState(() => {
             return {
@@ -118,7 +119,50 @@ class AuthContextProvider extends Component {
           this.checkExpiresInTime(data.expiresIn);
         }
       } catch (err) {
-        this.signupBadRequest(err);
+        this.authBadRequest(err);
+      }
+    };
+    signinUser();
+  };
+
+  signup = (dataAuth) => {
+    this.authStart();
+
+    const signupUser = async () => {
+      try {
+        const response = await fetch(SIGNUP_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: dataAuth.email,
+            password: dataAuth.password,
+            returnSecureToken: true,
+          }),
+        });
+        const data = await response.json();
+        if (data.error) {
+          this.authFail(data.error);
+        } else {
+          this.setState(() => {
+            return {
+              idUser: data.localId,
+              idToken: data.idToken,
+              email: data.email,
+              error: {},
+              isLoading: false,
+            };
+          });
+          const expiresInTimeDate = new Date(
+            new Date().getTime() + data.expiresIn * 1000
+          );
+          localStorage.setItem("idUser", data.localId);
+          localStorage.setItem("idToken", data.idToken);
+          localStorage.setItem("email", data.email);
+          localStorage.setItem("expiresInTimeDate", expiresInTimeDate);
+          this.checkExpiresInTime(data.expiresIn);
+        }
+      } catch (err) {
+        this.authBadRequest(err);
       }
     };
     signupUser();
@@ -152,15 +196,16 @@ class AuthContextProvider extends Component {
     }
   };
 
+
   render() {
     console.log("[auth.js] - render", this.state);
     return (
       <AuthContext.Provider
         value={{
           ...this.state,
-          signupStart: this.signupStart,
+          authStart: this.authStart,
           signup: this.signup,
-          signupFail: this.signupFail,
+          signin: this.signin,
         }}
       >
         {this.props.children}

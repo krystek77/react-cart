@@ -3,6 +3,8 @@ import Title from "./Title";
 import Input from "./Input";
 import { ButtonWrapper } from "./Button";
 import { ThemeContextConsumer } from "../context/theme";
+import { AuthContextConsumer } from "../context/auth";
+import Spinner from "./Spinner";
 import styled from "styled-components";
 
 export default class Signin extends React.Component {
@@ -103,6 +105,11 @@ export default class Signin extends React.Component {
     return formattedFormData;
   };
 
+  submitSigninForm = (event, dataAuth, signin) => {
+    event.preventDefault();
+    signin(dataAuth);
+  };
+
   render() {
     let contentForm = this.formatFormData(this.state.signinForm).map(
       ({ id, config }) => {
@@ -123,27 +130,57 @@ export default class Signin extends React.Component {
         <div className="row">
           <div className="col-10 col-sm-10 col-md-8 col-lg-6 mx-auto ">
             <ThemeContextConsumer>
-              {(theme) => (
-                <FormWrapper
-                  value={theme}
-                  onSubmit={(event) => {
-                    event.preventDefault();
-                    console.log("Signin form");
-                  }}
-                >
-                  <h2 className="form-title">LOGIN</h2>
-                  {contentForm}
-                  <ButtonWrapper
-                    disabled={this.state.totalFormValid ? false : true}
-                    value={theme}
-                    className="form-btn"
-                    type="submit"
-                  >
-                    <i className="fas fa-sign-in-alt"></i>
-                    <span>LOGIN</span>
-                  </ButtonWrapper>
-                </FormWrapper>
-              )}
+              {(theme) => {
+                return (
+                  <AuthContextConsumer>
+                    {(auth) => {
+                      return (
+                        <React.Fragment>
+                          <FormWrapper
+                            value={theme}
+                            onSubmit={(event) =>
+                              this.submitSigninForm(
+                                event,
+                                {
+                                  email: this.state.signinForm.email.value,
+                                  password: this.state.signinForm.password
+                                    .value,
+                                },
+                                auth.signin
+                              )
+                            }
+                          >
+                            <h2 className="form-title">
+                              LOGIN
+                              <Spinner isLoading={auth.isLoading} />
+                            </h2>
+                            {contentForm}
+                            <ButtonWrapper
+                              disabled={
+                                this.state.totalFormValid ? false : true
+                              }
+                              value={theme}
+                              className="form-btn"
+                              type="submit"
+                            >
+                              <i className="fas fa-sign-in-alt"></i>
+                              <span>LOGIN</span>
+                            </ButtonWrapper>
+                          </FormWrapper>
+                          {Object.keys(auth.error).length > 0 && (
+                            <ErrorMessageWrapper
+                              value={theme}
+                              className="error-message"
+                            >
+                              Error: {auth.error.message}
+                            </ErrorMessageWrapper>
+                          )}
+                        </React.Fragment>
+                      );
+                    }}
+                  </AuthContextConsumer>
+                );
+              }}
             </ThemeContextConsumer>
           </div>
         </div>
@@ -151,6 +188,12 @@ export default class Signin extends React.Component {
     );
   }
 }
+
+const ErrorMessageWrapper = styled.div`
+  padding: 1rem;
+  font-size: 1.2rem;
+  color: ${(props) => props.value.theme.secondary.dark};
+`;
 
 const FormWrapper = styled.form`
   background-color: ${(props) => props.value.theme.primary.main};
@@ -160,10 +203,12 @@ const FormWrapper = styled.form`
   border-radius: 0.4rem;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 1);
   .form-title {
+    position: relative;
     font-family: "Open Sans", sans-serif;
     text-align: center;
     font-size: 1.2rem;
     color: ${(props) => props.value.theme.primary.text};
+    padding-bottom: 1.5rem;
   }
   .fa-sign-in-alt {
     margin-right: 0.5rem;
