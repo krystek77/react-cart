@@ -5,8 +5,12 @@ const AuthContext = React.createContext({
   error: {},
   idUser: "",
   token: "",
+  signupStart: () => {},
+  signup: () => {},
+  signupFail: () => {},
 });
 
+const SIGNUP_URL = `https://identitytoolkit.googleapis.com/v1/accounts:signUpa?key=${process.env.REACT_APP_FIREBASE_API_KEY}`;
 class AuthContextProvider extends Component {
   constructor(props) {
     super(props);
@@ -14,19 +18,82 @@ class AuthContextProvider extends Component {
       isLoading: false,
       error: {},
       idUser: "",
-      token: "",
+      idToken: "",
+      email: "",
+      expiresIn: "",
     };
   }
+
   signupStart = () => {
     console.log("Start auth");
+    this.setState(() => {
+      return { isLoading: true };
+    });
   };
-  signupFail = () => {
-    console.log("Fail auth");
+
+  signupFail = (err) => {
+    const { code, message } = err;
+    const error = { code, message };
+    this.setState(() => {
+      return {
+        error,
+        idUser: "",
+        idToken: "",
+        email: "",
+        espiresIn: "",
+        isLoading: false,
+      };
+    });
   };
+
+  signupBadRequest = (err) => {
+    const error = { message: err.message };
+    this.setState(() => {
+      return {
+        error,
+        isLoading: false,
+      };
+    });
+  };
+
   signup = (dataAuth) => {
-    console.log("Auth", dataAuth);
+    this.signupStart();
+
+    const signupUser = async () => {
+      try {
+        const response = await fetch(SIGNUP_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: dataAuth.email,
+            password: dataAuth.password,
+            returnSecureToken: true,
+          }),
+        });
+        const data = await response.json();
+        if (data.error) {
+          this.signupFail(data.error);
+        } else {
+          this.setState(() => {
+            return {
+              idUser: data.localId,
+              idToken: data.idToken,
+              email: data.email,
+              espiresIn: data.expiresIn,
+              error: {},
+              isLoading: false,
+            };
+          });
+        }
+      } catch (err) {
+        this.signupBadRequest(err);
+      }
+    };
+    signupUser();
   };
+
   render() {
+    console.log("[auth.js] - render", this.state);
     return (
       <AuthContext.Provider
         value={{
@@ -35,7 +102,9 @@ class AuthContextProvider extends Component {
           signup: this.signup,
           signupFail: this.signupFail,
         }}
-      ></AuthContext.Provider>
+      >
+        {this.props.children}
+      </AuthContext.Provider>
     );
   }
 }
