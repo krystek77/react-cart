@@ -1,4 +1,5 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
 import Title from "./Title";
 import Input from "./Input";
 import { ButtonWrapper } from "./Button";
@@ -134,7 +135,8 @@ export default class Signin extends React.Component {
                 return (
                   <AuthContextConsumer>
                     {(auth) => {
-                      return (
+                      const isAuthenticated = auth.idToken !== "";
+                      let form = (
                         <React.Fragment>
                           <FormWrapper
                             value={theme}
@@ -177,6 +179,8 @@ export default class Signin extends React.Component {
                           )}
                         </React.Fragment>
                       );
+                      if (isAuthenticated) form = <Redirect to="/" />;
+                      return form;
                     }}
                   </AuthContextConsumer>
                 );
