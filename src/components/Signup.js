@@ -1,4 +1,5 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
 import Title from "./Title";
 import Input from "./Input";
 import { ButtonWrapper } from "./Button";
@@ -183,7 +184,8 @@ export default class Signup extends React.Component {
                 return (
                   <AuthContextConsumer>
                     {(auth) => {
-                      return (
+                      const isAuthenticated = auth.idToken !== "";
+                      let form = (
                         <React.Fragment>
                           <FormWrapper
                             value={theme}
@@ -201,7 +203,7 @@ export default class Signup extends React.Component {
                           >
                             <h2 className="form-title">
                               SIGNUP
-                              <Spinner isLoading={auth.isLoading}/>
+                              <Spinner isLoading={auth.isLoading} />
                             </h2>
 
                             {contentForm}
@@ -227,6 +229,8 @@ export default class Signup extends React.Component {
                           )}
                         </React.Fragment>
                       );
+                      if (isAuthenticated) form = <Redirect to="/" />;
+                      return form;
                     }}
                   </AuthContextConsumer>
                 );
