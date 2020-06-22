@@ -5,6 +5,7 @@ import { ButtonWrapper } from "./Button";
 import { ThemeContextConsumer } from "../context/theme";
 import { AuthContextConsumer } from "../context/auth";
 import styled from "styled-components";
+import Spinner from "./Spinner";
 
 export default class Signup extends React.Component {
   constructor(props) {
@@ -198,7 +199,11 @@ export default class Signup extends React.Component {
                               )
                             }
                           >
-                            <h2 className="form-title">SIGNUP</h2>
+                            <h2 className="form-title">
+                              SIGNUP
+                              <Spinner isLoading={auth.isLoading}/>
+                            </h2>
+
                             {contentForm}
                             <ButtonWrapper
                               disabled={
@@ -248,10 +253,12 @@ const FormWrapper = styled.form`
   border-radius: 0.4rem;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 1);
   .form-title {
+    position: relative;
     font-family: "Open Sans", sans-serif;
     text-align: center;
     font-size: 1.2rem;
     color: ${(props) => props.value.theme.primary.text};
+    padding-bottom: 1.5rem;
   }
   .fa-sign-in-alt {
     margin-right: 0.5rem;
