@@ -18,13 +18,19 @@ class App extends React.Component {
     return (
       <AuthContextConsumer>
         {(auth) => {
-          return (
-            <div className="App">
-              <Modal />
-              <Navbar />
+          const isAuthenticated = auth.idToken !== "";
+          let routes = (
+            <Switch>
+              <Route path="/signin" component={Signin} />
+              <Route path="/signup" component={Signup} />
+              <Route path="/details" component={ProductDetails} />
+              <Route path="/" component={ProductsList} />
+              <Redirect to="/" />
+            </Switch>
+          );
+          if (isAuthenticated) {
+            routes = (
               <Switch>
-                <Route path="/signin" component={Signin} />
-                <Route path="/signup" component={Signup} />
                 <Route
                   path="/signout"
                   render={(props) => (
@@ -36,6 +42,13 @@ class App extends React.Component {
                 <Route path="/" component={ProductsList} />
                 <Redirect to="/" />
               </Switch>
+            );
+          }
+          return (
+            <div className="App">
+              <Modal />
+              <Navbar />
+              {routes}
               <Footer />
             </div>
           );
