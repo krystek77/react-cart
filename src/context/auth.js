@@ -8,6 +8,7 @@ const AuthContext = React.createContext({
   email: "",
   signup: () => {},
   signin: () => {},
+  signout: () => {},
 });
 
 const SIGNUP_URL = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_API_KEY}`;
@@ -196,7 +197,6 @@ class AuthContextProvider extends Component {
     }
   };
 
-
   render() {
     console.log("[auth.js] - render", this.state);
     return (
@@ -206,6 +206,7 @@ class AuthContextProvider extends Component {
           authStart: this.authStart,
           signup: this.signup,
           signin: this.signin,
+          signout: this.signout,
         }}
       >
         {this.props.children}
