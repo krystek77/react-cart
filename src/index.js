@@ -8,16 +8,19 @@ import App from "./App";
 
 import { ThemeContextProvider } from "./context/theme";
 import { ProductContextProvider } from "./context/product";
+import { AuthContextProvider } from "./context/auth";
 
 const app = (
   <ThemeContextProvider>
-    <ProductContextProvider>
-      <Router>
-        <React.StrictMode>
-          <App />
-        </React.StrictMode>
-      </Router>
-    </ProductContextProvider>
+    <AuthContextProvider>
+      <ProductContextProvider>
+        <Router>
+          <React.StrictMode>
+            <App />
+          </React.StrictMode>
+        </Router>
+      </ProductContextProvider>
+    </AuthContextProvider>
   </ThemeContextProvider>
 );
 const container = document.getElementById("root");
