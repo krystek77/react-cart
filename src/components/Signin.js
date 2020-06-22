@@ -21,7 +21,7 @@ export default class Signin extends React.Component {
             placeholder: "Enter your email",
             label: "",
           },
-          value: "",
+          value: "test@test.pl",
           validation: {
             required: true,
             regExp: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
@@ -41,7 +41,7 @@ export default class Signin extends React.Component {
             placeholder: "Enter your password",
             label: "",
           },
-          value: "",
+          value: "A?1aaaaa",
           validation: {
             required: true,
             minLength: 8,
