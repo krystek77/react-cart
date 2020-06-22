@@ -4,72 +4,97 @@ import { NavLink as Link } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../logo-min.png";
 import { ThemeContextConsumer, themes } from "../context/theme";
+import { AuthContextConsumer } from "../context/auth";
 
 export default function Navbar() {
   return (
     <ThemeContextConsumer>
-      {(value) => (
-        <NavWrapper value={value}>
-          <Link to="/" className="brand-logo">
-            <img src={logo} alt="brand-logo" />
-          </Link>
-          <div className="nav-menu">
-            <ul className="nav">
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  activeClassName="active"
-                  to="/"
-                  exact
-                >
-                  Products
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  activeClassName="active"
-                  to="/signin"
-                >
-                  Signin
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  activeClassName="active"
-                  to="/signup"
-                >
-                  Signup
-                </Link>
-              </li>
-            </ul>
-            <div className="controls">
-              <Link to="/cart">
-                <ButtonWrapper value={value} className="control-btn">
-                  <i
-                    className="fa fa-cart-arrow-down btn-icon"
-                    aria-hidden="true"
-                  ></i>
-                  <span className="btn-label">Cart</span>
-                </ButtonWrapper>
-              </Link>
-              <ButtonWrapper
-                navbar
-                className="control-btn"
-                value={value}
-                onClick={value.toggleTheme}
-              >
-                {value.theme === themes.orangeMagenta ? (
-                  <i className="fas fa-toggle-on"></i>
-                ) : (
-                  <i className="fas fa-toggle-off"></i>
-                )}
-              </ButtonWrapper>
-            </div>
-          </div>
-        </NavWrapper>
-      )}
+      {(value) => {
+        return (
+          <AuthContextConsumer>
+            {(auth) => {
+              const isAuthenticated = auth.idToken !== "";
+              return (
+                <NavWrapper value={value}>
+                  <Link to="/" className="brand-logo">
+                    <img src={logo} alt="brand-logo" />
+                  </Link>
+                  <div className="nav-menu">
+                    <ul className="nav">
+                      <li className="nav-item">
+                        <Link
+                          className="nav-link"
+                          activeClassName="active"
+                          to="/"
+                          exact
+                        >
+                          Products
+                        </Link>
+                      </li>
+                      {!isAuthenticated && (
+                        <React.Fragment>
+                          <li className="nav-item">
+                            <Link
+                              className="nav-link"
+                              activeClassName="active"
+                              to="/signin"
+                            >
+                              Signin
+                            </Link>
+                          </li>
+                          <li className="nav-item">
+                            <Link
+                              className="nav-link"
+                              activeClassName="active"
+                              to="/signup"
+                            >
+                              Signup
+                            </Link>
+                          </li>
+                        </React.Fragment>
+                      )}
+                    </ul>
+                    {isAuthenticated && (
+                      <div className="controls">
+                        <Link to="/cart">
+                          <ButtonWrapper value={value} className="control-btn">
+                            <i
+                              className="fa fa-cart-arrow-down btn-icon"
+                              aria-hidden="true"
+                            ></i>
+                            <span className="btn-label">Cart</span>
+                          </ButtonWrapper>
+                        </Link>
+                        <Link to="/signout">
+                          <ButtonWrapper value={value} className="control-btn">
+                            <i className="fas fa-sign-out-alt btn-icon"></i>
+                            <span className="btn-label">Logout</span>
+                          </ButtonWrapper>
+                        </Link>
+                      </div>
+                    )}
+
+                    <div>
+                      <ButtonWrapper
+                        navbar
+                        className="control-btn"
+                        value={value}
+                        onClick={value.toggleTheme}
+                      >
+                        {value.theme === themes.orangeMagenta ? (
+                          <i className="fas fa-toggle-on"></i>
+                        ) : (
+                          <i className="fas fa-toggle-off"></i>
+                        )}
+                      </ButtonWrapper>
+                    </div>
+                  </div>
+                </NavWrapper>
+              );
+            }}
+          </AuthContextConsumer>
+        );
+      }}
     </ThemeContextConsumer>
   );
 }
