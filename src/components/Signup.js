@@ -3,6 +3,7 @@ import Title from "./Title";
 import Input from "./Input";
 import { ButtonWrapper } from "./Button";
 import { ThemeContextConsumer } from "../context/theme";
+import { AuthContextConsumer } from "../context/auth";
 import styled from "styled-components";
 
 export default class Signup extends React.Component {
@@ -19,7 +20,7 @@ export default class Signup extends React.Component {
             placeholder: "Enter your email",
             label: "",
           },
-          value: "",
+          value: "email@email.pl",
           validation: {
             required: true,
             regExp: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
@@ -39,7 +40,7 @@ export default class Signup extends React.Component {
             placeholder: "Enter your password",
             label: "",
           },
-          value: "",
+          value: "A?1aaaaa",
           validation: {
             required: true,
             minLength: 8,
@@ -62,7 +63,7 @@ export default class Signup extends React.Component {
             placeholder: "Enter your nick",
             label: "",
           },
-          value: "",
+          value: "Krys",
           validation: {
             required: true,
             regExp: /^[A-Z]{1}[a-z]+\d*$/,
@@ -152,6 +153,11 @@ export default class Signup extends React.Component {
     return formattedFormData;
   };
 
+  submitSignupForm = (event, dataAuth, signup) => {
+    event.preventDefault();
+    signup(dataAuth);
+  };
+
   render() {
     let contentForm = this.formatFormData(this.state.signupForm).map(
       ({ id, config }) => {
@@ -172,27 +178,41 @@ export default class Signup extends React.Component {
         <div className="row">
           <div className="col-10 col-sm-10 col-md-8 col-lg-6 mx-auto ">
             <ThemeContextConsumer>
-              {(theme) => (
-                <FormWrapper
-                  value={theme}
-                  onSubmit={(event) => {
-                    event.preventDefault();
-                    console.log("Signup form");
-                  }}
-                >
-                  <h2 className="form-title">SIGNUP</h2>
-                  {contentForm}
-                  <ButtonWrapper
-                    disabled={this.state.totalFormValid ? false : true}
-                    value={theme}
-                    className="form-btn"
-                    type="submit"
-                  >
-                    <i className="fas fa-sign-in-alt"></i>
-                    <span>SIGNUP</span>
-                  </ButtonWrapper>
-                </FormWrapper>
-              )}
+              {(theme) => {
+                return (
+                  <AuthContextConsumer>
+                    {(auth) => {
+                      return (
+                        <FormWrapper
+                          value={theme}
+                          onSubmit={(event) =>
+                            this.submitSignupForm(
+                              event,
+                              {
+                                email: this.state.signupForm.email.value,
+                                password: this.state.signupForm.password.value,
+                              },
+                              auth.signup
+                            )
+                          }
+                        >
+                          <h2 className="form-title">SIGNUP</h2>
+                          {contentForm}
+                          <ButtonWrapper
+                            disabled={this.state.totalFormValid ? false : true}
+                            value={theme}
+                            className="form-btn"
+                            type="submit"
+                          >
+                            <i className="fas fa-sign-in-alt"></i>
+                            <span>SIGNUP</span>
+                          </ButtonWrapper>
+                        </FormWrapper>
+                      );
+                    }}
+                  </AuthContextConsumer>
+                );
+              }}
             </ThemeContextConsumer>
           </div>
         </div>
