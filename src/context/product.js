@@ -8,6 +8,7 @@ const ProductContext = React.createContext({
   isModalOpen: false,
   total: 0,
   isLoading: false,
+  error: {},
 });
 
 class ProductContextProvider extends React.Component {
@@ -43,14 +44,14 @@ class ProductContextProvider extends React.Component {
     const error = {
       message: err.message,
     };
-    this.setState(() => ({ isLoading: false, error }));
+    this.setState(() => ({ isLoading: false, error: error }));
   };
 
   getProducts = async () => {
     this.getProductsStart();
     try {
       const response = await fetch(
-        "https://react-cart-9fc7d.firebaseio.com/products.jso"
+        "https://react-cart-9fc7d.firebaseio.com/products.json"
       );
       const data = await response.json();
       this.getProductsEnd();
@@ -78,7 +79,9 @@ class ProductContextProvider extends React.Component {
       this.state.isModalOpen !== nextState.isModalOpen ||
       this.state.cart.length !== nextState.cart.length ||
       this.state.cart !== nextState.cart ||
-      this.state.total !== nextState.total
+      this.state.total !== nextState.total ||
+      this.state.error !== nextState.error ||
+      this.state.isLoading !== nextState.isLoading
     );
   }
 
