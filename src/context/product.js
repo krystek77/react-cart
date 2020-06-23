@@ -26,8 +26,34 @@ class ProductContextProvider extends React.Component {
   }
   componentDidMount() {
     console.log("[ProductContextProvider]-mounted");
-    this.setProducts();
+    this.getProducts();
+    // this.setProducts();
   }
+  /**
+   * Get products from firabase database
+   */
+  getProducts = async () => {
+    try {
+      const response = await fetch(
+        "https://react-cart-9fc7d.firebaseio.com/products.json"
+      );
+      const data = await response.json();
+
+      const products = [];
+      for (let key in data) {
+        products.push({ id: key, ...data[key] });
+      }
+
+      this.setState(() => {
+        return {
+          products: products,
+        };
+      });
+      
+    } catch (error) {
+      console.log(error);
+  };
+
   setProducts = () => {
     const tempProducts = [];
     const tempProductDetails = { ...productDetails };
@@ -48,6 +74,7 @@ class ProductContextProvider extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return (
+      this.state.products !== nextState.products ||
       this.state.productDetails !== nextState.productDetails ||
       this.state.isModalOpen !== nextState.isModalOpen ||
       this.state.cart.length !== nextState.cart.length ||
@@ -191,7 +218,7 @@ class ProductContextProvider extends React.Component {
     });
   };
   render() {
-    console.log("[ProductContextProvider]-render");
+    console.log("[ProductContextProvider]-render", this.state.products);
     return (
       <ProductContext.Provider
         value={{

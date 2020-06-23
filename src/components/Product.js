@@ -141,7 +141,7 @@ const ProductWrapper = styled.div`
 `;
 
 Product.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   img: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
