@@ -12,6 +12,7 @@ import Cart from "./components/Cart/Cart";
 import Modal from "./components/Modal";
 import Footer from "./components/Footer";
 import { AuthContextConsumer } from "./context/auth";
+import Greeting from "./components/Greeting";
 
 class App extends React.Component {
   render() {
@@ -48,6 +49,7 @@ class App extends React.Component {
             <div className="App">
               <Modal />
               <Navbar />
+              <Greeting />
               {routes}
               <Footer />
             </div>
