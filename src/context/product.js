@@ -7,6 +7,7 @@ const ProductContext = React.createContext({
   cart: [],
   isModalOpen: false,
   total: 0,
+  isLoading: false,
 });
 
 class ProductContextProvider extends React.Component {
@@ -18,6 +19,8 @@ class ProductContextProvider extends React.Component {
       cart: [],
       isModalOpen: false,
       total: 0,
+      isLoading: false,
+      error: {},
     };
   }
 
@@ -29,15 +32,28 @@ class ProductContextProvider extends React.Component {
     this.getProducts();
     // this.setProducts();
   }
-  /**
-   * Get products from firabase database
-   */
+
+  getProductsStart = () => {
+    this.setState(() => ({ isLoading: true }));
+  };
+  getProductsEnd = () => {
+    this.setState(() => ({ isLoading: false }));
+  };
+  getProductsFail = (err) => {
+    const error = {
+      message: err.message,
+    };
+    this.setState(() => ({ isLoading: false, error }));
+  };
+
   getProducts = async () => {
+    this.getProductsStart();
     try {
       const response = await fetch(
-        "https://react-cart-9fc7d.firebaseio.com/products.json"
+        "https://react-cart-9fc7d.firebaseio.com/products.jso"
       );
       const data = await response.json();
+      this.getProductsEnd();
 
       const products = [];
       for (let key in data) {
@@ -49,10 +65,22 @@ class ProductContextProvider extends React.Component {
           products: products,
         };
       });
-      
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
+      this.getProductsFail(err);
+    }
   };
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      this.state.products !== nextState.products ||
+      this.state.productDetails !== nextState.productDetails ||
+      this.state.isModalOpen !== nextState.isModalOpen ||
+      this.state.cart.length !== nextState.cart.length ||
+      this.state.cart !== nextState.cart ||
+      this.state.total !== nextState.total
+    );
+  }
 
   setProducts = () => {
     const tempProducts = [];
@@ -72,16 +100,6 @@ class ProductContextProvider extends React.Component {
     );
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return (
-      this.state.products !== nextState.products ||
-      this.state.productDetails !== nextState.productDetails ||
-      this.state.isModalOpen !== nextState.isModalOpen ||
-      this.state.cart.length !== nextState.cart.length ||
-      this.state.cart !== nextState.cart ||
-      this.state.total !== nextState.total
-    );
-  }
   getProduct = (id) => {
     return this.state.products.find((product) => product.id === id);
   };
