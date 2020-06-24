@@ -2,7 +2,7 @@ import React from "react";
 import Product from "./Product";
 import Title from "./Title";
 import { ProductContextConsumer } from "../context/product";
-import { Error } from "./ErrorWrapper";
+import Error from "./ErrorWrapper";
 import CssSpinner from "./CssSpinner";
 
 export default function ProductsList() {
