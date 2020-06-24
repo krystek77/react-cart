@@ -248,7 +248,7 @@ class ProductContextProvider extends React.Component {
         count: tempProduct.count,
         total: tempProduct.total,
       };
-      this.startDownloadingData();
+      // this.startDownloadingData();
       try {
         const response = await fetch(
           `https://react-cart-9fc7d.firebaseio.com/cart/${id}.json`,
@@ -258,7 +258,7 @@ class ProductContextProvider extends React.Component {
             body: JSON.stringify(updatedCartItemValues),
           }
         );
-        this.endDonwloadingData();
+        // this.endDonwloadingData();
         this.setState(
           () => {
             return {
