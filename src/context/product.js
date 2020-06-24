@@ -24,13 +24,50 @@ class ProductContextProvider extends React.Component {
       error: {},
     };
   }
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log("[products.js]- componentDidUpdate");
     this.countTotal();
+    if (localStorage.getItem("idToken") !== null) {
+      const products = this.state.products;
+      const cart = this.state.cart;
+      console.log(cart, products);
+      cart.forEach((cartItem) => {
+        const updatedProductIndex = products.findIndex((product) => {
+          return product.id === cartItem.idProduct;
+        });
+        console.log(updatedProductIndex);
+        if (updatedProductIndex !== -1) {
+          const updatedProduct = { ...products[updatedProductIndex] };
+          updatedProduct.inCart = cartItem.inCart;
+          updatedProduct.count = cartItem.count;
+          updatedProduct.total = cartItem.total;
+          products[updatedProductIndex] = updatedProduct;
+        }
+      });
+      products.forEach(({ id, count, total }) => {
+        prevState.products.forEach((prevProduct) => {
+          if (
+            id !== prevProduct.id ||
+            count !== prevProduct.count ||
+            total !== prevProduct.total
+          ) {
+            this.setState(() => {
+              return {
+                products: products,
+              };
+            });
+          }
+        });
+      });
+    }
   }
+
   componentDidMount() {
     console.log("[ProductContextProvider]-mounted");
     this.getProducts();
-    // this.setProducts();
+    if (localStorage.getItem("idToken") !== null) {
+      this.getCartItems();
+    }
   }
 
   getCartItems = () => {
@@ -251,7 +288,6 @@ class ProductContextProvider extends React.Component {
     this.state.cart.forEach(({ id }) => {
       updateClearCart(id);
     });
-    
   };
 
   handleIncrementCartItem = (id) => {
