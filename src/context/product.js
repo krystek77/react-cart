@@ -326,18 +326,27 @@ class ProductContextProvider extends React.Component {
     tempProduct.count = 0;
     tempProduct.total = 0;
     tempProducts[index] = tempProduct;
-
-    this.setState(
-      () => {
-        return {
-          cart: updatedCart,
-          products: tempProducts,
-        };
-      },
-      () => {
-        this.countTotal();
+    const updateRemoveCartItem = async () => {
+      try {
+        await fetch(`https://react-cart-9fc7d.firebaseio.com/cart/${id}.json`, {
+          method: "DELETE",
+        });
+        this.setState(
+          () => {
+            return {
+              cart: updatedCart,
+              products: tempProducts,
+            };
+          },
+          () => {
+            this.countTotal();
+          }
+        );
+      } catch (error) {
+        this.downloadDataFailed(error);
       }
-    );
+    };
+    updateRemoveCartItem();
   };
 
   countTotal = () => {
