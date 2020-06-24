@@ -233,7 +233,7 @@ class ProductContextProvider extends React.Component {
     });
   };
 
-  handleIncreaseProduct = (id) => {
+  handleIncrementCartItem = (id) => {
     console.log("Increase ...", id);
     const tempCart = [...this.state.cart];
     console.log(tempCart);
@@ -248,17 +248,14 @@ class ProductContextProvider extends React.Component {
         count: tempProduct.count,
         total: tempProduct.total,
       };
-      
+
       try {
-        await fetch(
-          `https://react-cart-9fc7d.firebaseio.com/cart/${id}.json`,
-          {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(updatedCartItemValues),
-          }
-        );
-        
+        await fetch(`https://react-cart-9fc7d.firebaseio.com/cart/${id}.json`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedCartItemValues),
+        });
+
         this.setState(
           () => {
             return {
@@ -277,7 +274,7 @@ class ProductContextProvider extends React.Component {
     updateIncrementCartItem();
   };
 
-  handleDecreaseProduct = (id) => {
+  handleDecrementCartItem = (id) => {
     console.log("Decrease ...", id);
     const tempCart = [...this.state.cart];
     const index = tempCart.findIndex((product) => product.id === id);
@@ -289,14 +286,11 @@ class ProductContextProvider extends React.Component {
         total: tempProduct.total,
       };
       try {
-        await fetch(
-          `https://react-cart-9fc7d.firebaseio.com/cart/${id}.json`,
-          {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(updatedCartItemValues),
-          }
-        );
+        await fetch(`https://react-cart-9fc7d.firebaseio.com/cart/${id}.json`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedCartItemValues),
+        });
 
         this.setState(
           () => {
@@ -315,7 +309,7 @@ class ProductContextProvider extends React.Component {
     };
 
     if (tempProduct.count === 0) {
-      this.handleRemoveProduct(id);
+      this.handleRemoveCartItem(id);
     } else {
       tempProduct.total = tempProduct.total - tempProduct.price;
       tempCart[index] = tempProduct;
@@ -323,7 +317,7 @@ class ProductContextProvider extends React.Component {
     }
   };
 
-  handleRemoveProduct = (id) => {
+  handleRemoveCartItem = (id) => {
     const updatedCart = this.state.cart.filter((product) => product.id !== id);
     const tempProducts = [...this.state.products];
     const index = tempProducts.indexOf(this.getProduct(id));
@@ -345,6 +339,7 @@ class ProductContextProvider extends React.Component {
       }
     );
   };
+
   countTotal = () => {
     console.log("counTotal");
     const total = this.state.cart
@@ -354,6 +349,7 @@ class ProductContextProvider extends React.Component {
       total,
     });
   };
+
   render() {
     console.log("[ProductContextProvider]-render", this.state.products);
     return (
@@ -366,9 +362,9 @@ class ProductContextProvider extends React.Component {
           openModal: this.openModal,
           closeModal: this.closeModal,
           clearCart: this.handleClearCart,
-          increaseProduct: this.handleIncreaseProduct,
-          decreaseProduct: this.handleDecreaseProduct,
-          removeProduct: this.handleRemoveProduct,
+          increaseProduct: this.handleIncrementCartItem,
+          decreaseProduct: this.handleDecrementCartItem,
+          removeProduct: this.handleRemoveCartItem,
         }}
       >
         {this.props.children}
