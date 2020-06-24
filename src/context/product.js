@@ -25,17 +25,16 @@ class ProductContextProvider extends React.Component {
     };
   }
   componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log("[products.js]- componentDidUpdate");
     this.countTotal();
     if (localStorage.getItem("idToken") !== null) {
       const products = this.state.products;
       const cart = this.state.cart;
-      console.log(cart, products);
+
       cart.forEach((cartItem) => {
         const updatedProductIndex = products.findIndex((product) => {
           return product.id === cartItem.idProduct;
         });
-        console.log(updatedProductIndex);
+
         if (updatedProductIndex !== -1) {
           const updatedProduct = { ...products[updatedProductIndex] };
           updatedProduct.inCart = cartItem.inCart;
@@ -63,7 +62,6 @@ class ProductContextProvider extends React.Component {
   }
 
   componentDidMount() {
-    console.log("[ProductContextProvider]-mounted");
     this.getProducts();
     if (localStorage.getItem("idToken") !== null) {
       this.getCartItems();
@@ -100,7 +98,6 @@ class ProductContextProvider extends React.Component {
           this.endDonwloadingData();
         }
       } catch (error) {
-        console.log("Get cart items", error);
         this.downloadDataFailed(error);
       }
     };
@@ -140,7 +137,6 @@ class ProductContextProvider extends React.Component {
         };
       });
     } catch (err) {
-      console.log(err);
       this.downloadDataFailed(err);
     }
   };
@@ -228,9 +224,7 @@ class ProductContextProvider extends React.Component {
             this.countTotal();
           }
         );
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     };
     addCartItem();
   };
@@ -264,13 +258,13 @@ class ProductContextProvider extends React.Component {
     let numberOfDeletedCartItems = 0;
     const updateClearCart = async (id) => {
       try {
-        const response = await fetch(
+        await fetch(
           `https://react-cart-9fc7d.firebaseio.com/cart/${id}.json`,
           { method: "DELETE" }
         );
-        const data = await response.json();
-        console.log("DELETE ALL", data);
+        
         numberOfDeletedCartItems += 1;
+        
         if (this.state.cart.length === numberOfDeletedCartItems) {
           this.setState(() => {
             return {
@@ -291,7 +285,6 @@ class ProductContextProvider extends React.Component {
   };
 
   handleIncrementCartItem = (id) => {
-    console.log("Increase ...", id);
     const tempCart = [...this.state.cart];
     const index = tempCart.findIndex((cart) => cart.id === id);
     const tempProduct = { ...tempCart[index] };
@@ -328,7 +321,6 @@ class ProductContextProvider extends React.Component {
             };
           },
           () => {
-            console.log("Callbak setState - counTotal");
             this.countTotal();
           }
         );
@@ -340,7 +332,6 @@ class ProductContextProvider extends React.Component {
   };
 
   handleDecrementCartItem = (id) => {
-    console.log("Decrease ...", id);
     const tempCart = [...this.state.cart];
     const index = tempCart.findIndex((cart) => cart.id === id);
     const tempProduct = { ...tempCart[index] };
@@ -373,7 +364,6 @@ class ProductContextProvider extends React.Component {
             };
           },
           () => {
-            console.log("Callbak setState - counTotal");
             this.countTotal();
           }
         );
@@ -405,7 +395,7 @@ class ProductContextProvider extends React.Component {
     tempProduct.count = 0;
     tempProduct.total = 0;
     tempProducts[index] = tempProduct;
-    console.log(tempProducts);
+
     const updateRemoveCartItem = async () => {
       try {
         await fetch(`https://react-cart-9fc7d.firebaseio.com/cart/${id}.json`, {
@@ -430,7 +420,6 @@ class ProductContextProvider extends React.Component {
   };
 
   countTotal = () => {
-    console.log("counTotal");
     const total = this.state.cart
       .map(({ total }) => total)
       .reduce((sum, item) => sum + item, 0);
@@ -440,7 +429,6 @@ class ProductContextProvider extends React.Component {
   };
 
   render() {
-    console.log("[ProductContextProvider]-render", this.state.products);
     return (
       <ProductContext.Provider
         value={{

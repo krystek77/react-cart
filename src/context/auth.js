@@ -26,17 +26,14 @@ class AuthContextProvider extends Component {
   }
 
   componentDidMount() {
-    console.log("[auth.js]-mounted");
     this.checkAuthState();
   }
 
   checkExpiresInTime = (expiresInTime) => {
-    console.log("check expiredIn", expiresInTime);
     setTimeout(this.signout, expiresInTime * 1000);
   };
 
   signout = () => {
-    console.log("Signout user");
     this.setState(() => {
       return {
         isLoading: false,
@@ -53,7 +50,6 @@ class AuthContextProvider extends Component {
   };
 
   authStart = () => {
-    console.log("Start auth");
     this.setState(() => {
       return { isLoading: true };
     });
@@ -171,34 +167,31 @@ class AuthContextProvider extends Component {
 
   checkAuthState = () => {
     const idToken = localStorage.getItem("idToken");
-    console.log(idToken);
+
     if (!idToken) {
       this.signout();
     } else {
       const expiresInTimeDate = new Date(
         localStorage.getItem("expiresInTimeDate")
       );
-      console.log(expiresInTimeDate);
+
       if (expiresInTimeDate > new Date()) {
-        console.log("Signin user authomatically");
         const idUser = localStorage.getItem("idUser");
         const email = localStorage.getItem("email");
         this.setState(() => {
           return { idUser, email, idToken };
         });
-        console.log(expiresInTimeDate - new Date());
         this.checkExpiresInTime(
           (expiresInTimeDate.getTime() - new Date().getTime()) / 1000
         );
       } else {
-        console.log("Signout user.... if time elapsed");
+
         this.signout();
       }
     }
   };
 
   render() {
-    console.log("[auth.js] - render", this.state);
     return (
       <AuthContext.Provider
         value={{

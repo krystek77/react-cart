@@ -38,24 +38,24 @@ const ThemeContext = React.createContext({
 
 class ThemeContextProvider extends React.Component {
   constructor(props) {
-    // console.log("[ThemeContextProvider] - constructor");
+    //
     super(props);
     this.state = {
       theme: themes.orangeMagenta,
     };
   }
   componentDidUpdate() {
-    // console.log("[ThemeContextProvider] - updated");
+    //
   }
   componentDidMount() {
-    // console.log("[ThemeContextProvider] - mounted");
+    //
   }
 
   toggleTheme() {
-    // console.log("TOGGLE THEME");
+    //
     this.setState(
       (prevState, props) => {
-        // console.log("[ThemeContextProvider] - setState");
+        //
         return {
           theme:
             prevState.theme === themes.orangeMagenta
@@ -64,12 +64,12 @@ class ThemeContextProvider extends React.Component {
         };
       },
       () => {
-        // console.log("Theme changed", this.state.theme);
+        //
       }
     );
   }
   render() {
-    // console.log("[ThemeContextProvider] - render", this.state.theme);
+    //
     const { children } = this.props;
     return (
       <ThemeContext.Provider

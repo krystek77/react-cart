@@ -4,10 +4,7 @@ import styled from "styled-components";
 export default function Summary(props) {
   const { value, total } = props;
   useEffect(() => {
-    console.log("[Summary] - summary mounted", total);
-    return () => {
-      console.log("[Summary] - summary unmounted", total);
-    };
+    return () => {};
   });
   return (
     <SummaryWrapper value={value}>

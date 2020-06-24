@@ -11,7 +11,6 @@ import Error from "../ErrorWrapper";
 
 export default class Cart extends React.Component {
   componentDidMount() {
-    console.log("[Cart] - mounted");
     // this.context.getCartItems();
   }
 

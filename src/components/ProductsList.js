@@ -14,7 +14,6 @@ export default function ProductsList() {
 
       <ProductContextConsumer>
         {(value) => {
-          console.log(value);
           let productsList = value.products.map((product) => {
             return <Product key={product.id} {...product} />;
           });

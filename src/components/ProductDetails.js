@@ -8,10 +8,7 @@ import { ButtonWrapper } from "./Button";
 
 export default function ProductDetails(props) {
   useEffect(() => {
-    console.log("[ProductDetails]-mounted");
-    return () => {
-      console.log("[ProductDetails]-unmounted");
-    };
+    return () => {};
   });
   return (
     <div className="container">
