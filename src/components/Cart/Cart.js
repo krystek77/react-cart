@@ -22,7 +22,7 @@ export default class Cart extends React.Component {
       content = <Error error={this.context.error} />;
     if (this.context.isLoading) content = <Spinner />;
 
-    if (this.context.cart.length > 0) {
+    if (!this.context.error.message && this.context.cart.length > 0) {
       title = "Your cart is not empty. I'm so happy now ...";
       content = (
         <React.Fragment>
