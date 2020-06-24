@@ -59,10 +59,9 @@ export default class Cart extends React.Component {
         </React.Fragment>
       );
     }
-
     return (
       <React.Fragment>
-        {!this.context.isLoading || !this.context.error.message ? null : (
+        {!this.context.error.message && (
           <div className="container">
             <div className="row">
               <Title title={title} />
