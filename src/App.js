@@ -15,6 +15,12 @@ import { AuthContextConsumer } from "./context/auth";
 import Greeting from "./components/Greeting";
 
 class App extends React.Component {
+  componentDidUpdate() {
+    console.log("[App.js]-updated");
+  }
+  componentDidMount() {
+    console.log("[App.js]-mounted");
+  }
   render() {
     return (
       <AuthContextConsumer>

@@ -25,8 +25,11 @@ class ProductContextProvider extends React.Component {
     };
   }
   componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log("[product.js] - updated");
+
     this.countTotal();
     if (localStorage.getItem("idToken") !== null) {
+      console.log("[product.js] - is token update");
       const products = this.state.products;
       const cart = this.state.cart;
 
@@ -62,6 +65,7 @@ class ProductContextProvider extends React.Component {
   }
 
   componentDidMount() {
+    console.log("[product.js] - mounted");
     this.getProducts();
     if (localStorage.getItem("idToken") !== null) {
       this.getCartItems();
@@ -255,16 +259,16 @@ class ProductContextProvider extends React.Component {
       tempProduct.total = 0;
       return tempProduct;
     });
+
     let numberOfDeletedCartItems = 0;
     const updateClearCart = async (id) => {
       try {
-        await fetch(
-          `https://react-cart-9fc7d.firebaseio.com/cart/${id}.json`,
-          { method: "DELETE" }
-        );
-        
+        await fetch(`https://react-cart-9fc7d.firebaseio.com/cart/${id}.json`, {
+          method: "DELETE",
+        });
+
         numberOfDeletedCartItems += 1;
-        
+
         if (this.state.cart.length === numberOfDeletedCartItems) {
           this.setState(() => {
             return {
@@ -278,10 +282,19 @@ class ProductContextProvider extends React.Component {
         this.downloadDataFailed(error);
       }
     };
-
-    this.state.cart.forEach(({ id }) => {
-      updateClearCart(id);
-    });
+    if (localStorage.getItem("idToken") !== null) {
+      this.state.cart.forEach(({ id }) => {
+        updateClearCart(id);
+      });
+    } else {
+      this.setState(() => {
+        return {
+          products: tempProducts,
+          cart: [],
+          total: 0,
+        };
+      });
+    }
   };
 
   handleIncrementCartItem = (id) => {
@@ -429,10 +442,12 @@ class ProductContextProvider extends React.Component {
   };
 
   render() {
+    console.log("[product.js] - render");
     return (
       <ProductContext.Provider
         value={{
           ...this.state,
+          getProducts: this.getProducts,
           getCartItems: this.getCartItems,
           addToCart: this.addToCart,
           displayDetails: this.handleProductDetails,

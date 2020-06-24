@@ -11,7 +11,7 @@ import Error from "../ErrorWrapper";
 
 export default class Cart extends React.Component {
   componentDidMount() {
-    // this.context.getCartItems();
+    this.context.getCartItems();
   }
 
   render() {

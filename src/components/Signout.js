@@ -5,7 +5,8 @@ import { ProductContext } from "../context/product";
 class Signout extends Component {
   componentDidMount() {
     this.props.signout();
-    // this.context.clearCart();
+    this.context.getProducts();
+    this.context.clearCart();
   }
   render() {
     return <Redirect to="/" />;
