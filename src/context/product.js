@@ -236,12 +236,19 @@ class ProductContextProvider extends React.Component {
   handleIncrementCartItem = (id) => {
     console.log("Increase ...", id);
     const tempCart = [...this.state.cart];
-    console.log(tempCart);
-    const index = tempCart.findIndex((product) => product.id === id);
+    const index = tempCart.findIndex((cart) => cart.id === id);
     const tempProduct = { ...tempCart[index] };
     tempProduct.count = tempProduct.count + 1;
     tempProduct.total = tempProduct.count * tempProduct.price;
     tempCart[index] = tempProduct;
+    const products = [...this.state.products];
+    const incrementProductsIndex = products.findIndex((product) => {
+      return product.id === tempProduct.idProduct;
+    });
+    const incrementProduct = { ...products[incrementProductsIndex] };
+    incrementProduct.count = tempProduct.count;
+    incrementProduct.total = tempProduct.total;
+    products[incrementProductsIndex] = incrementProduct;
 
     const updateIncrementCartItem = async () => {
       const updatedCartItemValues = {
@@ -260,6 +267,7 @@ class ProductContextProvider extends React.Component {
           () => {
             return {
               cart: tempCart,
+              products: products,
             };
           },
           () => {
