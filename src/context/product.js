@@ -234,22 +234,45 @@ class ProductContextProvider extends React.Component {
   handleIncreaseProduct = (id) => {
     console.log("Increase ...", id);
     const tempCart = [...this.state.cart];
+    console.log(tempCart);
     const index = tempCart.findIndex((product) => product.id === id);
     const tempProduct = { ...tempCart[index] };
     tempProduct.count = tempProduct.count + 1;
     tempProduct.total = tempProduct.count * tempProduct.price;
     tempCart[index] = tempProduct;
-    this.setState(
-      () => {
-        return {
-          cart: tempCart,
-        };
-      },
-      () => {
-        console.log("Callbak setState - counTotal");
-        this.countTotal();
+
+    const updateIncrementCartItem = async () => {
+      const updatedCartItemValues = {
+        count: tempProduct.count,
+        total: tempProduct.total,
+      };
+      this.startDownloadingData();
+      try {
+        const response = await fetch(
+          `https://react-cart-9fc7d.firebaseio.com/cart/${id}.json`,
+          {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedCartItemValues),
+          }
+        );
+        this.endDonwloadingData();
+        this.setState(
+          () => {
+            return {
+              cart: tempCart,
+            };
+          },
+          () => {
+            console.log("Callbak setState - counTotal");
+            this.countTotal();
+          }
+        );
+      } catch (error) {
+        this.downloadDataFailed(error);
       }
-    );
+    };
+    updateIncrementCartItem();
   };
 
   handleDecreaseProduct = (id) => {
