@@ -24,7 +24,9 @@ class ProductContextProvider extends React.Component {
       error: {},
     };
   }
-
+  componentDidUpdate() {
+    this.countTotal();
+  }
   componentDidMount() {
     console.log("[ProductContextProvider]-mounted");
     this.getProducts();
