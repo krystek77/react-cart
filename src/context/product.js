@@ -25,22 +25,56 @@ class ProductContextProvider extends React.Component {
     };
   }
 
-  componentDidUpdate() {
-    console.log("[ProductContextProvider]-updated");
-  }
   componentDidMount() {
     console.log("[ProductContextProvider]-mounted");
     this.getProducts();
     // this.setProducts();
   }
 
-  getProductsStart = () => {
+  getCartItems = () => {
+    this.startDownloadingData();
+
+    const fetchCartItems = async () => {
+      try {
+        const queryParams = `?auth=${localStorage.getItem(
+          "idToken"
+        )}&orderBy="idUser"&equalTo="${localStorage.getItem("idUser")}"`;
+
+        const response = await fetch(
+          "https://react-cart-9fc7d.firebaseio.com/cart.json" + queryParams
+        );
+        const data = await response.json();
+        if (data.error) {
+          const error = {};
+          error.message = data.error;
+          this.downloadDataFailed(error);
+        } else {
+          const cart = [];
+          for (let key in data) {
+            cart.push({ id: key, ...data[key] });
+          }
+          this.setState(() => {
+            return {
+              cart: cart,
+            };
+          });
+          this.endDonwloadingData();
+        }
+      } catch (error) {
+        console.log("Get cart items", error);
+        this.downloadDataFailed(error);
+      }
+    };
+    fetchCartItems();
+  };
+
+  startDownloadingData = () => {
     this.setState(() => ({ isLoading: true }));
   };
-  getProductsEnd = () => {
+  endDonwloadingData = () => {
     this.setState(() => ({ isLoading: false }));
   };
-  getProductsFail = (err) => {
+  downloadDataFailed = (err) => {
     const error = {
       message: err.message,
     };
@@ -48,13 +82,13 @@ class ProductContextProvider extends React.Component {
   };
 
   getProducts = async () => {
-    this.getProductsStart();
+    this.startDownloadingData();
     try {
       const response = await fetch(
         "https://react-cart-9fc7d.firebaseio.com/products.json"
       );
       const data = await response.json();
-      this.getProductsEnd();
+      this.endDonwloadingData();
 
       const products = [];
       for (let key in data) {
@@ -68,7 +102,7 @@ class ProductContextProvider extends React.Component {
       });
     } catch (err) {
       console.log(err);
-      this.getProductsFail(err);
+      this.downloadDataFailed(err);
     }
   };
 
@@ -115,19 +149,53 @@ class ProductContextProvider extends React.Component {
     tempProduct.count = 1;
     tempProduct.total = tempProduct.price;
     tempProducts[index] = tempProduct;
-    this.setState(
-      () => {
-        return {
-          products: tempProducts,
-          productDetails: tempProduct,
-          cart: [...this.state.cart, tempProduct],
-        };
-      },
-      () => {
-        this.countTotal();
+
+    const cartItem = {
+      idProduct: tempProduct.id,
+      img: tempProduct.img,
+      price: tempProduct.price,
+      count: tempProduct.count,
+      total: tempProduct.total,
+      inCart: tempProduct.inCart,
+      description: tempProduct.description,
+      name: tempProduct.name,
+      origin: tempProduct.origin,
+      idUser: localStorage.getItem("idUser"),
+      added: new Date().toISOString(),
+    };
+
+    const addCartItem = async () => {
+      try {
+        const response = await fetch(
+          "https://react-cart-9fc7d.firebaseio.com/cart.json?auth=" +
+            localStorage.getItem("idToken"),
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(cartItem),
+          }
+        );
+        const data = await response.json();
+
+        this.setState(
+          () => {
+            return {
+              products: tempProducts,
+              productDetails: tempProduct,
+              cart: [...this.state.cart, { id: data.name, ...cartItem }],
+            };
+          },
+          () => {
+            this.countTotal();
+          }
+        );
+      } catch (error) {
+        console.log(error);
       }
-    );
+    };
+    addCartItem();
   };
+
   handleProductDetails = (id) => {
     const productDetails = this.getProduct(id);
     this.setState(() => {
@@ -244,6 +312,7 @@ class ProductContextProvider extends React.Component {
       <ProductContext.Provider
         value={{
           ...this.state,
+          getCartItems: this.getCartItems,
           addToCart: this.addToCart,
           displayDetails: this.handleProductDetails,
           openModal: this.openModal,
@@ -262,4 +331,4 @@ class ProductContextProvider extends React.Component {
 
 const ProductContextConsumer = ProductContext.Consumer;
 
-export { ProductContextProvider, ProductContextConsumer };
+export { ProductContextProvider, ProductContextConsumer, ProductContext };
