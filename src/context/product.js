@@ -283,23 +283,46 @@ class ProductContextProvider extends React.Component {
     const index = tempCart.findIndex((product) => product.id === id);
     const tempProduct = { ...tempCart[index] };
     tempProduct.count = tempProduct.count - 1;
+    const updateDecrementCartItem = async () => {
+      const updatedCartItemValues = {
+        count: tempProduct.count,
+        total: tempProduct.total,
+      };
+      try {
+        await fetch(
+          `https://react-cart-9fc7d.firebaseio.com/cart/${id}.json`,
+          {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedCartItemValues),
+          }
+        );
+
+        this.setState(
+          () => {
+            return {
+              cart: tempCart,
+            };
+          },
+          () => {
+            console.log("Callbak setState - counTotal");
+            this.countTotal();
+          }
+        );
+      } catch (error) {
+        this.downloadDataFailed(error);
+      }
+    };
+
     if (tempProduct.count === 0) {
       this.handleRemoveProduct(id);
     } else {
       tempProduct.total = tempProduct.total - tempProduct.price;
       tempCart[index] = tempProduct;
-      this.setState(
-        () => {
-          return {
-            cart: tempCart,
-          };
-        },
-        () => {
-          this.countTotal();
-        }
-      );
+      updateDecrementCartItem();
     }
   };
+
   handleRemoveProduct = (id) => {
     const updatedCart = this.state.cart.filter((product) => product.id !== id);
     const tempProducts = [...this.state.products];
