@@ -218,19 +218,40 @@ class ProductContextProvider extends React.Component {
 
   handleClearCart = () => {
     const tempProducts = this.state.products.map((product) => {
-      const tempProduct = product;
+      const tempProduct = { ...product };
       tempProduct.inCart = false;
       tempProduct.count = 0;
       tempProduct.total = 0;
       return tempProduct;
     });
-    this.setState(() => {
-      return {
-        products: tempProducts,
-        cart: [],
-        total: 0,
-      };
+    let numberOfDeletedCartItems = 0;
+    const updateClearCart = async (id) => {
+      try {
+        const response = await fetch(
+          `https://react-cart-9fc7d.firebaseio.com/cart/${id}.json`,
+          { method: "DELETE" }
+        );
+        const data = await response.json();
+        console.log("DELETE ALL", data);
+        numberOfDeletedCartItems += 1;
+        if (this.state.cart.length === numberOfDeletedCartItems) {
+          this.setState(() => {
+            return {
+              products: tempProducts,
+              cart: [],
+              total: 0,
+            };
+          });
+        }
+      } catch (error) {
+        this.downloadDataFailed(error);
+      }
+    };
+
+    this.state.cart.forEach(({ id }) => {
+      updateClearCart(id);
     });
+    
   };
 
   handleIncrementCartItem = (id) => {
