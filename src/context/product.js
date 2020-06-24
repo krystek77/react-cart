@@ -285,9 +285,17 @@ class ProductContextProvider extends React.Component {
   handleDecrementCartItem = (id) => {
     console.log("Decrease ...", id);
     const tempCart = [...this.state.cart];
-    const index = tempCart.findIndex((product) => product.id === id);
+    const index = tempCart.findIndex((cart) => cart.id === id);
     const tempProduct = { ...tempCart[index] };
     tempProduct.count = tempProduct.count - 1;
+
+    const products = [...this.state.products];
+    const decrementProductsIndex = products.findIndex(
+      (product) => product.id === tempProduct.idProduct
+    );
+    const decrementProduct = { ...products[decrementProductsIndex] };
+    decrementProduct.count = tempProduct.count;
+
     const updateDecrementCartItem = async () => {
       const updatedCartItemValues = {
         count: tempProduct.count,
@@ -304,6 +312,7 @@ class ProductContextProvider extends React.Component {
           () => {
             return {
               cart: tempCart,
+              products: products,
             };
           },
           () => {
@@ -320,6 +329,8 @@ class ProductContextProvider extends React.Component {
       this.handleRemoveCartItem(id);
     } else {
       tempProduct.total = tempProduct.total - tempProduct.price;
+      decrementProduct.total = tempProduct.total;
+      products[decrementProductsIndex] = decrementProduct;
       tempCart[index] = tempProduct;
       updateDecrementCartItem();
     }
