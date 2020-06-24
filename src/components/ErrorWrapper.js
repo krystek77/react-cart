@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { ThemeContextConsumer } from "../context/theme";
 
-export const Error = (props) => {
+const Error = (props) => {
   return (
     <ThemeContextConsumer>
       {(theme) => {
@@ -41,3 +41,4 @@ const ErrorWrapper = styled.div`
     color: ${(props) => props.value.theme.secondary.text};
   }
 `;
+export default Error;
