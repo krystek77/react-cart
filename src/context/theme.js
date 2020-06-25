@@ -82,4 +82,4 @@ class ThemeContextProvider extends React.Component {
 }
 const ThemeContextConsumer = ThemeContext.Consumer;
 
-export { ThemeContextProvider, ThemeContextConsumer, themes };
+export { ThemeContextProvider, ThemeContextConsumer, themes, ThemeContext };
