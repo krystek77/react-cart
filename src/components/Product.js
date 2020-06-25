@@ -4,9 +4,10 @@ import styled from "styled-components";
 import { ThemeContextConsumer } from "../context/theme";
 import { ProductContextConsumer } from "../context/product";
 import PropTypes from "prop-types";
+import NumberProductInCart from "./NumberInCart";
 
 export default function Product(props) {
-  const { id, img, price, name, inCart } = props;
+  const { id, img, price, name, inCart, count } = props;
   return (
     <ThemeContextConsumer>
       {(value) => {
@@ -48,6 +49,7 @@ export default function Product(props) {
                           ></i>
                         )}
                       </button>
+                      <NumberProductInCart count={count} />
                     </div>
                   );
                 }}
