@@ -24,8 +24,11 @@ class AuthContextProvider extends Component {
       email: "",
     };
   }
-
+  componentDidUpdate() {
+    console.log("[auth.js] - updated");
+  }
   componentDidMount() {
+    console.log("[auth.js] - mounted");
     this.checkAuthState();
   }
 
@@ -185,7 +188,6 @@ class AuthContextProvider extends Component {
           (expiresInTimeDate.getTime() - new Date().getTime()) / 1000
         );
       } else {
-
         this.signout();
       }
     }
@@ -209,4 +211,4 @@ class AuthContextProvider extends Component {
 }
 
 const AuthContextConsumer = AuthContext.Consumer;
-export { AuthContextProvider, AuthContextConsumer };
+export { AuthContextProvider, AuthContextConsumer, AuthContext };
