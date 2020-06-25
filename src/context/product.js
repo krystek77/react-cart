@@ -24,52 +24,58 @@ class ProductContextProvider extends React.Component {
       error: {},
     };
   }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     console.log("[product.js] - updated");
 
-    this.countTotal();
     if (localStorage.getItem("idToken") !== null) {
-      console.log("[product.js] - is token update");
-      const products = this.state.products;
-      const cart = this.state.cart;
-
-      cart.forEach((cartItem) => {
-        const updatedProductIndex = products.findIndex((product) => {
-          return product.id === cartItem.idProduct;
-        });
-
-        if (updatedProductIndex !== -1) {
-          const updatedProduct = { ...products[updatedProductIndex] };
-          updatedProduct.inCart = cartItem.inCart;
-          updatedProduct.count = cartItem.count;
-          updatedProduct.total = cartItem.total;
-          products[updatedProductIndex] = updatedProduct;
-        }
-      });
-      products.forEach(({ id, count, total }) => {
-        prevState.products.forEach((prevProduct) => {
-          if (
-            id !== prevProduct.id ||
-            count !== prevProduct.count ||
-            total !== prevProduct.total
-          ) {
-            this.setState(() => {
-              return {
-                products: products,
-              };
-            });
-          }
-        });
-      });
+      console.log("[product.js] - update, isToken === true");
+      this.countTotal();
+      this.synchronizeProductsWithCart(
+        this.state.products,
+        this.state.cart,
+        prevState
+      );
     }
   }
 
+  synchronizeProductsWithCart = (productItems, cartItems, prevState) => {
+    console.log("[product.js]-synchronize");
+    const products = productItems;
+    const cart = cartItems;
+
+    cart.forEach((cartItem) => {
+      const updatedProductIndex = products.findIndex((product) => {
+        return product.id === cartItem.idProduct;
+      });
+
+      if (updatedProductIndex !== -1) {
+        const updatedProduct = { ...products[updatedProductIndex] };
+        updatedProduct.inCart = cartItem.inCart;
+        updatedProduct.count = cartItem.count;
+        updatedProduct.total = cartItem.total;
+        products[updatedProductIndex] = updatedProduct;
+      }
+    });
+    products.forEach(({ id, count, total }) => {
+      prevState.products.forEach((prevProduct) => {
+        if (
+          id !== prevProduct.id ||
+          count !== prevProduct.count ||
+          total !== prevProduct.total
+        ) {
+          this.setState(() => {
+            return {
+              products: products,
+            };
+          });
+        }
+      });
+    });
+  };
+
   componentDidMount() {
     console.log("[product.js] - mounted");
-    this.getProducts();
-    if (localStorage.getItem("idToken") !== null) {
-      this.getCartItems();
-    }
   }
 
   getCartItems = () => {
