@@ -64,7 +64,11 @@ export default function ProductDetails(props) {
                           </ButtonWrapper>
                         </Link>
                         <ButtonWrapper
-                          disabled={inCart ? true : false}
+                          disabled={
+                            inCart || localStorage.getItem("idToken") === null
+                              ? true
+                              : false
+                          }
                           value={theme}
                           onClick={() => addToCart(id)}
                         >
