@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ButtonWrapper } from "./Button";
 import { NavLink as Link } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../logo-min.png";
 import { ThemeContextConsumer, themes } from "../context/theme";
 import { AuthContextConsumer } from "../context/auth";
+import { ProductContext } from "../context/product";
 
 export default function Navbar() {
+  const productContext = useContext(ProductContext);
+
   return (
     <ThemeContextConsumer>
       {(value) => {
@@ -58,6 +61,11 @@ export default function Navbar() {
                       <div className="controls">
                         <Link to="/cart">
                           <ButtonWrapper value={value} className="control-btn">
+                            <span className="items-in-cart">
+                              {productContext.cart.length > 0
+                                ? productContext.cart.length
+                                : 0}
+                            </span>
                             <i
                               className="fa fa-cart-arrow-down btn-icon"
                               aria-hidden="true"
@@ -181,6 +189,20 @@ const NavWrapper = styled.nav`
     @media (min-width: 768px) {
       padding-top: 0rem;
       padding-bottom: 0rem;
+    }
+    .items-in-cart {
+      display: inline-block;
+      margin-right: 0.5rem;
+      color: ${(props) => props.value.theme.primary.text};
+      font-weight: 600;
+      box-sizing: border-box;
+      border: 1px solid ${(props) => props.value.theme.primary.dark};
+      background-color: ${(props) => props.value.theme.primary.light};
+      font-size: 0.8rem;
+      line-height: 1.2rem;
+      width: 1.4rem;
+      height: 1.4rem;
+      border-radius: 50%;
     }
   }
 `;
