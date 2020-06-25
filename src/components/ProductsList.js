@@ -18,15 +18,12 @@ export default function ProductsList() {
   if (productContext.isLoading) productsList = <CssSpinner />;
 
   useEffect(() => {
-    console.log("[ProductsList.js]-mounted");
     if (authContext.idToken !== "") {
       productContext.getCartItems();
     } else {
       productContext.getProducts();
     }
-    return () => {
-      console.log("[ProductsList.js]-unmounted");
-    };
+    return () => {};
   }, [
     authContext.idToken,
     productContext.getCartItems,

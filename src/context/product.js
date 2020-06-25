@@ -26,10 +26,7 @@ class ProductContextProvider extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log("[product.js] - updated");
-
     if (localStorage.getItem("idToken") !== null) {
-      console.log("[product.js] - update, isToken === true");
       this.countTotal();
       this.synchronizeProductsWithCart(
         this.state.products,
@@ -40,7 +37,6 @@ class ProductContextProvider extends React.Component {
   }
 
   synchronizeProductsWithCart = (productItems, cartItems, prevState) => {
-    console.log("[product.js]-synchronize");
     const products = productItems;
     const cart = cartItems;
 
@@ -75,7 +71,6 @@ class ProductContextProvider extends React.Component {
   };
 
   componentDidMount() {
-    console.log("[product.js] - mounted");
     if (localStorage.getItem("idToken") !== null) {
       this.getCartItems();
     } else {
@@ -453,7 +448,6 @@ class ProductContextProvider extends React.Component {
   };
 
   render() {
-    console.log("[product.js] - render");
     return (
       <ProductContext.Provider
         value={{

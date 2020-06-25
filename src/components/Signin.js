@@ -60,12 +60,8 @@ export default class Signin extends React.Component {
       totalFormValid: false,
     };
   }
-  componentDidUpdate() {
-    console.log("[signin.js]-updated");
-  }
-  componentDidMount() {
-    console.log("[signin.js]-mounted");
-  }
+  componentDidUpdate() {}
+  componentDidMount() {}
   validationInput = (value, rules) => {
     let valid = true;
     if (rules.required) valid = value.trim() !== "" && valid;
@@ -165,7 +161,6 @@ export default class Signin extends React.Component {
                             </h2>
                             {contentForm}
                             <ButtonWrapper
-            
                               disabled={
                                 this.state.totalFormValid ? false : true
                               }

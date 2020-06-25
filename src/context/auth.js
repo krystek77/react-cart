@@ -24,11 +24,8 @@ class AuthContextProvider extends Component {
       email: "",
     };
   }
-  componentDidUpdate() {
-    console.log("[auth.js] - updated");
-  }
+  componentDidUpdate() {}
   componentDidMount() {
-    console.log("[auth.js] - mounted");
     this.checkAuthState();
   }
 
