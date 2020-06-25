@@ -60,7 +60,12 @@ export default class Signin extends React.Component {
       totalFormValid: false,
     };
   }
-
+  componentDidUpdate() {
+    console.log("[signin.js]-updated");
+  }
+  componentDidMount() {
+    console.log("[signin.js]-mounted");
+  }
   validationInput = (value, rules) => {
     let valid = true;
     if (rules.required) valid = value.trim() !== "" && valid;
@@ -135,8 +140,10 @@ export default class Signin extends React.Component {
                 return (
                   <AuthContextConsumer>
                     {(auth) => {
-                      const isAuthenticated = auth.idToken !== "";
-                      let form = (
+                      const isAuthenticated = auth.idToken !== null;
+                      let form = null;
+                      if (isAuthenticated) form = <Redirect push to="/" />;
+                      form = (
                         <React.Fragment>
                           <FormWrapper
                             value={theme}
@@ -158,6 +165,7 @@ export default class Signin extends React.Component {
                             </h2>
                             {contentForm}
                             <ButtonWrapper
+            
                               disabled={
                                 this.state.totalFormValid ? false : true
                               }
@@ -179,7 +187,7 @@ export default class Signin extends React.Component {
                           )}
                         </React.Fragment>
                       );
-                      if (isAuthenticated) form = <Redirect to="/" />;
+
                       return form;
                     }}
                   </AuthContextConsumer>
