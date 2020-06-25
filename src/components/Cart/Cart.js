@@ -10,7 +10,11 @@ import Spinner from "../CssSpinner";
 import Error from "../ErrorWrapper";
 
 export default class Cart extends React.Component {
+  componentDidUpdate() {
+    console.log("[Cart.js]-updated");
+  }
   componentDidMount() {
+    console.log("[Cart.js]-mounted");
     this.context.getCartItems();
   }
 
