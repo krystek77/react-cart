@@ -29,7 +29,11 @@ export default function Product(props) {
 
                       <button
                         className="btn-inCart"
-                        disabled={inCart ? true : false}
+                        disabled={
+                          inCart || localStorage.getItem("idToken") === null
+                            ? true
+                            : false
+                        }
                         onClick={() => {
                           data.addToCart(id);
                           data.openModal();
