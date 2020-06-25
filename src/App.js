@@ -31,7 +31,7 @@ class App extends React.Component {
               <Route path="/signin" component={Signin} />
               <Route path="/signup" component={Signup} />
               <Route path="/details" component={ProductDetails} />
-              <Route path="/" component={ProductsList} />
+              <Route path="/" exact component={ProductsList} />
               <Redirect to="/" />
             </Switch>
           );
@@ -46,7 +46,7 @@ class App extends React.Component {
                 />
                 <Route path="/cart" component={Cart} />
                 <Route path="/details" component={ProductDetails} />
-                <Route path="/" component={ProductsList} />
+                <Route path="/" exact component={ProductsList} />
                 <Redirect to="/" />
               </Switch>
             );
