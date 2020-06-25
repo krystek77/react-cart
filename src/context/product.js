@@ -76,6 +76,11 @@ class ProductContextProvider extends React.Component {
 
   componentDidMount() {
     console.log("[product.js] - mounted");
+    if (localStorage.getItem("idToken") !== null) {
+      this.getCartItems();
+    } else {
+      this.getProducts();
+    }
   }
 
   getCartItems = () => {
