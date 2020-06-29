@@ -9,4 +9,4 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ### LINK TO APP
 
-[LINK](https://react-cart-2-2e36b.web.app/)
+[LINK](https://react-cart-ac503.web.app/)
