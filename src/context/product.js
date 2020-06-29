@@ -88,7 +88,7 @@ class ProductContextProvider extends React.Component {
         )}&orderBy="idUser"&equalTo="${localStorage.getItem("idUser")}"`;
 
         const response = await fetch(
-          "https://react-cart-9fc7d.firebaseio.com/cart.json" + queryParams
+          "https://react-cart-ac503.firebaseio.com/cart.json" + queryParams
         );
         const data = await response.json();
         if (data.error) {
@@ -131,7 +131,7 @@ class ProductContextProvider extends React.Component {
     this.startDownloadingData();
     try {
       const response = await fetch(
-        "https://react-cart-9fc7d.firebaseio.com/products.json"
+        "https://react-cart-ac503.firebaseio.com/products.json"
       );
       const data = await response.json();
       this.endDonwloadingData();
@@ -212,7 +212,7 @@ class ProductContextProvider extends React.Component {
     const addCartItem = async () => {
       try {
         const response = await fetch(
-          "https://react-cart-9fc7d.firebaseio.com/cart.json?auth=" +
+          "https://react-cart-ac503.firebaseio.com/cart.json?auth=" +
             localStorage.getItem("idToken"),
           {
             method: "POST",
@@ -269,7 +269,7 @@ class ProductContextProvider extends React.Component {
     let numberOfDeletedCartItems = 0;
     const updateClearCart = async (id) => {
       try {
-        await fetch(`https://react-cart-9fc7d.firebaseio.com/cart/${id}.json`, {
+        await fetch(`https://react-cart-ac503.firebaseio.com/cart/${id}.json`, {
           method: "DELETE",
         });
 
@@ -326,7 +326,7 @@ class ProductContextProvider extends React.Component {
       };
 
       try {
-        await fetch(`https://react-cart-9fc7d.firebaseio.com/cart/${id}.json`, {
+        await fetch(`https://react-cart-ac503.firebaseio.com/cart/${id}.json`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(updatedCartItemValues),
@@ -369,7 +369,7 @@ class ProductContextProvider extends React.Component {
         total: tempProduct.total,
       };
       try {
-        await fetch(`https://react-cart-9fc7d.firebaseio.com/cart/${id}.json`, {
+        await fetch(`https://react-cart-ac503.firebaseio.com/cart/${id}.json`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(updatedCartItemValues),
@@ -417,7 +417,7 @@ class ProductContextProvider extends React.Component {
 
     const updateRemoveCartItem = async () => {
       try {
-        await fetch(`https://react-cart-9fc7d.firebaseio.com/cart/${id}.json`, {
+        await fetch(`https://react-cart-ac503.firebaseio.com/cart/${id}.json`, {
           method: "DELETE",
         });
         this.setState(
